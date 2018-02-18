@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>Bootstrap 101 Template</title>
+
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Anton|Bellefair|Cabin|Indie+Flower|Kavivanar|Lato|Lobster|Montserrat|Mukta+Mahee|Open+Sans|Oswald|Pacifico|Roboto|Roboto+Condensed|Slabo+27px|Ubuntu" rel="stylesheet">
+
+</head>
+<body>
+<br>
+<br>
+<div class=" row">
+    <div class="col-md-10 col-md-offset-1 well well-sm">
+
+
+        <div >
+            <form class="form-inline" >
+                <div class="col-md-3">
+                    <label>Font</label>&nbsp
+                    <select class="form-control" style="" id="font">
+                        <option>Anton</option>
+                        <option>Bellefair</option>
+                        <option>Cabin</option>
+                        <option>Indie+Flower</option>
+                        <option>Kavivanar</option>
+                        <option>Lato</option>
+                        <option>Lobster</option>
+                        <option>Montserrat</option>
+                        <option>Mukta+Mahee</option>
+                        <option>Open+Sans</option>
+                        <option>Oswald</option>
+                        <option>Mukta+Mahee</option>
+                        <option>Pacifico</option>
+                        <option>Roboto</option>
+                        <option>Roboto+Condensed</option>
+                        <option>Slabo+27px</option>
+                        <option>Pacifico</option>
+                        <option>Ubuntu</option>
+                    </select>
+                </div>
+
+                <div class="col-md-2">
+                    <label>Level</label> &nbsp
+                    <select class="form-control" id="diff">
+                        <option>easy</option>
+                        <option selected>medium</option>
+                        <option>hard</option>
+                    </select>
+                </div>
+
+                <div class="form-group ">
+                    <!--<label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>-->
+                    <div class="input-group">
+                        <div class="input-group-addon">Word</div>
+
+                        <input type="color" class="form-control" value="#777777" id="wordcolor" style="width: 150%" >
+
+                    </div>
+                    &nbsp; &nbsp;
+                    <div class="input-group">
+                        <div class="input-group-addon">Guess</div>
+
+                        <input type="color" class="form-control" value="#FFFFFF" id="guesscolor" style="width: 150%" >
+
+                    </div> &nbsp; &nbsp;
+                    <div class="input-group">
+                        <div class="input-group-addon">Fore</div>
+
+                        <input type="color" class="form-control" value="#000000" id="forecolor" style="width: 150%" >
+                    </div>
+                    &nbsp; &nbsp;
+
+                </div>
+
+                <div class="col-md-1 col-md-push-6">
+                    <button type="submit" onclick="newGame()" class="btn btn-primary">New Game</button>
+                </div>
+
+
+            </form>
+        </div>
+    </div>
+
+
+    <div class="col-md-10 col-md-offset-1 well well-sm">
+        <div id="Level" class="col-md-1">
+            <label>Level</label>
+        </div>
+
+        <div id="Phrase" class="col-md-1 col-md-offset-1">
+            <label>Phrase</label>
+        </div>
+
+        <div id="Remaining" class="col-md-1 col-md-offset-1">
+            <label>Remaining</label>
+        </div>
+
+        <div id="Answer" class="col-md-1 col-md-offset-2">
+            <label>Answer</label>
+        </div>
+
+        <div id="Status" class="col-md-1 col-md-offset-1">
+            <label>Status</label>
+        </div>
+
+    </div>
+
+
+
+</div>
+
+
+
+<script src="js/app.js"></script>
+
+<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</body>
+</html>
