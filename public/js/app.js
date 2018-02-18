@@ -19,6 +19,10 @@ function newGame() {
     // });
 }
 
+function closeGame(){
+    div1.style.display='block';
+    div2.style.display='none';
+}
 
 
     function initial() {
