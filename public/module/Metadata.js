@@ -1,9 +1,19 @@
 var express = require('express');
 var router = express.Router();
 var level = require('./level');
-
-function defaults(font,level,colors) {
+var font=require('./font');
+var defaults=require('./defaults');
+function metadata(font,level,defaults) {
     this.font = font;
     this.level = level;
-    this.colors=colors;
+    this.defaults=defaults;
 }
+
+var metadataobj= new metadata(font.getfontDb(),level.gettLevelList(),defaults.getDefaultobj());
+
+function getMetadataobj()
+{
+    return metadataobj;
+}
+
+module.exports.getMetadataobj= getMetadataobj;
