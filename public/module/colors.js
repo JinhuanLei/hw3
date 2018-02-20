@@ -15,5 +15,12 @@ function getdefaultcolor() {
     return c1;
 }
 
+function createColorObj(guess,text,word)
+{
+    var obj=new colors(guess,text,word);
+    return obj;
+}
+
 module.exports.getdefaultcolor = getdefaultcolor;
+module.exports.createColorObj = createColorObj;
 

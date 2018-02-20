@@ -7,7 +7,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var index = require('./routes/index');
 var users = require('./routes/users');
-var game = require('./public/module/game');
+//var game = require('./public/module/game');
 
 
 var app = express();
@@ -28,7 +28,7 @@ app.use(session({
 
 }));
 app.use('/', index);
-app.use('/',game);
+//app.use('/',game);
 
 app.use('/users', users);
 

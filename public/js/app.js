@@ -1,10 +1,11 @@
+var sid;
 $(document).ready(function () {
 
     $.ajax({
         type: "GET",
         url :  "/wordgame/api/v1/sid",
         success: function (data) {
-alert(data);
+      sid=data;
         }
     });
 
@@ -54,7 +55,7 @@ function newGame() {
     var forecolor=$('#forecolor').val();
 
     $.ajax({
-        url: '/wordgame/api/v1/:sid',
+        url: '/wordgame/api/v1/'+sid,
         data:{"font":font,"level": diff,"wordcolor":wordcolor,"guesscolor":guesscolor,"forecolor":forecolor},
         method: "POST",
         success:function (data) {

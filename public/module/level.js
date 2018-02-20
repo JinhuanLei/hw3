@@ -24,5 +24,17 @@ function gettLevelList() {
     return levelDb;
 }
 
+function getLevelObj(name)
+{
+    for( var key in levelDb ) {
+      if(key.name==name)
+      {
+          return key;
+      }
+    }
+    return 0;
+}
+
 module.exports.getDefaultLevel = getDefaultLevel;
+module.exports.getLevelObj = getLevelObj;
 module.exports.gettLevelList = gettLevelList;

@@ -37,5 +37,15 @@ function getfontDb() {
 function getDefaultFont() {
     return f13;
 }
+
+function searchFont(font) {
+    for (var x = 1; x <= 16; x++) {
+        if (fontDb[x].category == font) {
+            return fontDb[x];
+        }
+        return 0;
+    }
+}
 module.exports.getfontDb = getfontDb;
 module.exports.getDefaultFont = getDefaultFont;
+module.exports.searchFont = searchFont;
