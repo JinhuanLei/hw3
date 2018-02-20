@@ -17,7 +17,7 @@ levelDb[1]=defaultlevel;
 levelDb[2]=hard;
 
 function getDefaultLevel() {
-    return c1;
+    return defaultlevel;
 }
 
 function gettLevelList() {

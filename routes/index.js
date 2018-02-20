@@ -2,12 +2,19 @@ var express = require('express');
 var router = express.Router();
 var uuid = require('uuid');
 var font = require('../public/module/font');
-var colors = require('../public/module/colors');
-var metaDb = {};
+var metadata = require('../public/module/Metadata');
 
 
 router.get('/wordgame', function(req, res, next) {
     res.sendFile( 'index.html', { root : __dirname + "/../public" } );
+});
+
+router.get('/wordgame/api/v1/sid', function(req, res, next) {
+   // req.session.regenerate(function (err) {
+   //     console.log(req.session);
+   //
+       res.send(req.sessionID);
+   // })
 });
 
 router.get('/wordgame/api/v1/meta/fonts', function(req, res, next) {
@@ -20,10 +27,19 @@ router.get('/wordgame/api/v1/meta/fonts', function(req, res, next) {
 });
 
 router.get('/wordgame/api/v1/meta', function(req, res, next) {
-    var result = [];
-    var dcolor =colors.getdefaultcolor();
-    result.push(dcolor);
-    res.send(result);
+    var resultmeta = [];
+    var metadataObj =metadata.getMetadataobj();
+    // result.push(metadataObj);
+    resultmeta.push(metadataObj);
+    res.send(resultmeta);
+});
+
+router.post('/wordgame/api/v1/:sid', function(req, res, next) {
+    var resultmeta = [];
+    var metadataObj =metadata.getMetadataobj();
+    // result.push(metadataObj);
+    resultmeta.push(metadataObj);
+    res.send(resultmeta);
 });
 
 module.exports = router;
