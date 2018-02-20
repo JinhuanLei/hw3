@@ -4,8 +4,8 @@ var level = require('./level');
 var font=require('./font');
 var defaults=require('./defaults');
 function metadata(font,level,defaults) {
-    this.font = font;
-    this.level = level;
+    this.fonts = font;
+    this.levels = level;
     this.defaults=defaults;
 }
 

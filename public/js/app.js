@@ -1,4 +1,13 @@
 $(document).ready(function () {
+
+    $.ajax({
+        type: "GET",
+        url :  "/wordgame/api/v1/sid",
+        success: function (data) {
+alert(data);
+        }
+    });
+
     $.ajax({
         type: "GET",
         url :  "/wordgame/api/v1/meta/fonts",
@@ -7,15 +16,24 @@ $(document).ready(function () {
                 $("#font").append("<option value='"+value.category+"'>"+value.category+"</option>");
             });
         }
-    })
+    });
 
     $.ajax({
         type: "GET",
         url :  "/wordgame/api/v1/meta",
         success: function (data) {
-        alert(data[0].guessBackground);
+         //alert(data[0].defaults.font.category);
+            $("#font").val(""+data[0].defaults.font.category+"").selected="selected";
+            $.each(data[0].levels,function(index,value){
+                $("#diff").append("<option value='"+value.name+"'>"+value.name+"</option>");
+            });
+            $("#diff").val(""+data[0].defaults.level.name+"").selected="selected";
+            $("#wordcolor").val(""+data[0].defaults.colors.wordBackground+"");
+            $("#guesscolor").val(""+data[0].defaults.colors.guessBackground+"");
+            $("#forecolor").val(""+data[0].defaults.colors.textBackground+"");
+
         }
-    })
+    });
 })
 var div1=document.getElementById("page1");
 var div2=document.getElementById("page2");
@@ -39,7 +57,9 @@ function newGame() {
         url: '/wordgame/api/v1/:sid',
         data:{"font":font,"level": diff,"wordcolor":wordcolor,"guesscolor":guesscolor,"forecolor":forecolor},
         method: "POST",
-        success:initial
+        success:function (data) {
+            
+        }
 
     });
 }
