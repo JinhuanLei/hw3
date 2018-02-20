@@ -59,7 +59,7 @@ function newGame() {
         data:{"font":font,"level": diff,"wordcolor":wordcolor,"guesscolor":guesscolor,"forecolor":forecolor},
         method: "POST",
         success:function (data) {
-            
+            console.log(data);
         }
 
     });
