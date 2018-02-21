@@ -35,6 +35,7 @@ $(document).ready(function () {
 
         }
     });
+
 })
 var div1=document.getElementById("page1");
 var div2=document.getElementById("page2");
@@ -71,6 +72,4 @@ function closeGame(){
 }
 
 
-    function setSelect(meta) {
-        
-    }
+

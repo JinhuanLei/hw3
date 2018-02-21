@@ -24,8 +24,13 @@ function Game( colors, font, guesses, level,remaining,status,target,timestamp,ti
 
 function createGame(colors,font,level) {
 
+    //var gameObj=new Game(colors,font,);
+    var fs = require('fs');
 
-    return result;
+    fs.readFile('public/wordlist.txt', function(err, data) {
+        console.log(String.fromCharCode(data[2]));
+    })
+    return 1;
 }
 
 
@@ -63,7 +68,7 @@ router.post('/wordgame/api/v1/:sid', function(req, res, next) {
     var colorObj=colors.createColorObj(req.body.guesscolor,req.body.forecolor,req.body.wordcolor)
    var fontObj=font.searchFont(req.body.font);
     var levelObj=level.getLevelObj(req.body.level)
-    //var result=createGame(colorObj,fontObj,levelObj);
+    var result=createGame(colorObj,fontObj,levelObj);
     res.send(colorObj);
 });
 
