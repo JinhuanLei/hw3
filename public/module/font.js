@@ -40,10 +40,10 @@ function getDefaultFont() {
 
 function searchFont(font) {
     for (var x = 1; x <= 16; x++) {
-        if (fontDb[x].category == font) {
+        if (fontDb[x].category==font) {
             return fontDb[x];
         }
-        return 0;
+
     }
 }
 module.exports.getfontDb = getfontDb;

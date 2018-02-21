@@ -35,17 +35,18 @@ $(document).ready(function () {
 
         }
     });
-
 })
 var div1=document.getElementById("page1");
 var div2=document.getElementById("page2");
 div2.style.display='none';
-var Font=new Object();
-var Level=new Object();
-var Colors=new Object();
-var Metadata=new Object();
-var Defaults=new Object();
-var Game=new Object();
+// var Font=new Object();
+// var Level=new Object();
+// var Colors=new Object();
+// var Metadata=new Object();
+// var Defaults=new Object();
+// var Game=new Object();
+
+
 function newGame() {
     div1.style.display='none';
     div2.style.display='block';
@@ -60,16 +61,83 @@ function newGame() {
         data:{"font":font,"level": diff,"wordcolor":wordcolor,"guesscolor":guesscolor,"forecolor":forecolor},
         method: "POST",
         success:function (data) {
-            console.log(data);
-        }
+            currentGameObj=data;
+            $('#remaining').html(data.remaining);
 
+                for(var x=0;x<data.target.length;x++)
+                {
+                   // var label=$('#wordview').append("<span>");
+//  style= font-family:"+data.font.rule+" background-color:"+data.colors.wordBackground+"; color:"+data.colors.textBackground+"; font-size:30px;
+//                     $('#wordview').append("</span>");
+//                     $('#wordview').append(" ");
+
+                    var label = document.createElement("label");
+                    label.style.width="30px";
+                    label.style.height="50px";
+                    label.style.textAlign= "center";
+                    label.style.background=data.colors.wordBackground;
+                    label.style.fontSize="30px";
+                    //var span = document.createElement("span");
+                    label.appendChild(document.createTextNode("_"));
+                    //label.appendChild(span);
+                    $('#wordview').append(label);
+                    $('#wordview').append(" ");
+
+                }
+
+        }
     });
 }
 
-function closeGame(){
-    div1.style.display='block';
-    div2.style.display='none';
+function closeGame() {
+    div1.style.display = 'block';
+    div2.style.display = 'none';
+    $.ajax({
+        type: "GET",
+        url: '/wordgame/api/v1/' + sid,
+        success: function (data) {
+           showTable(data);
+            $('#wordview').html("");
+            }
+
+        })
+
+}
+var currentGameObj;
+function makeGuess() {
+    var guessLetter=$('#letter').val();
+    $.ajax({
+        type: "POST",
+        url: '/wordgame/api/v1/' + sid+'/'+currentGameObj.id,
+        data:{"sid":sid,"gid":currentGameObj.id,"guess":guessLetter},
+        success: function (data) {
+         console.log(data);
+        }
+    })
 }
 
-
+function showTable(data) {
+    var count = Object.keys(data).length;
+    for (var x = 0; x < count; x++) {
+        var row = document.createElement("tr");
+        var td1 = document.createElement("td");
+        td1.height='40px';
+        td1.appendChild(document.createTextNode(data[x].level.name));
+        row.appendChild(td1);
+        var td2 = document.createElement("td");
+        td2.appendChild(document.createTextNode(data[x].view));
+        row.appendChild(td2);
+        var td3 = document.createElement("td");
+        td3.appendChild(document.createTextNode(data[x].remaining));
+        row.appendChild(td3);
+        var td4 = document.createElement("td");
+        td4.appendChild(document.createTextNode(data[x].target));
+        if(data[x].status!="unfinished")  row.appendChild(td4);
+        else row.appendChild(document.createElement("td"));
+        var td5 = document.createElement("td");
+        td5.appendChild(document.createTextNode(data[x].status));
+        row.appendChild(td5);
+    }
+    document.getElementById("gameList").append(row); //将行添加到<tbody>中
+}
 
