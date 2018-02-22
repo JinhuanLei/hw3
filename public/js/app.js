@@ -69,13 +69,14 @@ function newGame() {
 
 
 function closeGame() {
-    div1.style.display = 'block';
-    div2.style.display = 'none';
+
     $.ajax({
         type: "GET",
         url: '/wordgame/api/v1/' + sid,
         success: function (data) {
            showTable(data);
+            div1.style.display = 'block';
+            div2.style.display = 'none';
             }
 
         })
@@ -124,7 +125,8 @@ function showTable(data) {
             label.style.fontFamily=data[x].font.rule;
             label.style.color=data[x].colors.textBackground;
             //var span = document.crea.teElement("span");
-            label.appendChild(document.createTextNode((data[x].view)[x]));
+            var text=(data[x].view).charAt(t);
+            label.appendChild(document.createTextNode(text));
             //label.appendChild(span);
             td2.append(label);
             td2.append(" ");
@@ -148,8 +150,7 @@ function showTable(data) {
 }
 
 function showGame(data) {
-    div1.style.display='none';
-    div2.style.display='block';
+
     console.log(data);
     var guessform=document.getElementById("guessform");
     $('#wordview').html("");
@@ -202,7 +203,8 @@ function showGame(data) {
         $('#guesses').append(" ");
 
     }
-
+    div1.style.display='none';
+    div2.style.display='block';
 }
 
 
