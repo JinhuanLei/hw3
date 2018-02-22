@@ -83,17 +83,20 @@
         <!--<div class="modal-header">-->
             <div>
         <button type="submit" class="btn btn-danger" style="float:right" onclick="closeGame()"><span aria-hidden="true" >&times;</span></button>
-            <form class="form-inline" >
+            <form class="form-inline" target="nm_iframe">
                 <div class="form-group">
                     <label id="remaining"></label>
                     <label>guesses remaining.</label>&nbsp;&nbsp;&nbsp;
-                    <input type="text" class="form-control" style="width: 50px" id="letter">
+                    <input type="text" class="form-control" style="width: 50px" id="letter" id="lettleinput">
                     <button type="submit" onclick="makeGuess()" class="btn btn-primary">Guess</button>
                 </div>
             </form>
+                <iframe id="id_iframe" name="nm_iframe" style="display:none;"></iframe>
+
+
             </div>
         <br>
-        <div class="col-md-2 col-md-offset-3" id="guesses" >
+        <div class="col-md-3 col-md-offset-9" style="text-align: right" id="guesses" >
 
         </div>
         <br>

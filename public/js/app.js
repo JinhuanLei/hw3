@@ -61,33 +61,13 @@ function newGame() {
         data:{"font":font,"level": diff,"wordcolor":wordcolor,"guesscolor":guesscolor,"forecolor":forecolor},
         method: "POST",
         success:function (data) {
+            console.log(data);
             currentGameObj=data;
-            $('#remaining').html(data.remaining);
-
-                for(var x=0;x<data.target.length;x++)
-                {
-                   // var label=$('#wordview').append("<span>");
-//  style= font-family:"+data.font.rule+" background-color:"+data.colors.wordBackground+"; color:"+data.colors.textBackground+"; font-size:30px;
-//                     $('#wordview').append("</span>");
-//                     $('#wordview').append(" ");
-
-                    var label = document.createElement("label");
-                    label.style.width="30px";
-                    label.style.height="50px";
-                    label.style.textAlign= "center";
-                    label.style.background=data.colors.wordBackground;
-                    label.style.fontSize="30px";
-                    //var span = document.createElement("span");
-                    label.appendChild(document.createTextNode("_"));
-                    //label.appendChild(span);
-                    $('#wordview').append(label);
-                    $('#wordview').append(" ");
-
-                }
-
+            showGame(data);
         }
     });
 }
+
 
 function closeGame() {
     div1.style.display = 'block';
@@ -97,7 +77,6 @@ function closeGame() {
         url: '/wordgame/api/v1/' + sid,
         success: function (data) {
            showTable(data);
-            $('#wordview').html("");
             }
 
         })
@@ -111,7 +90,8 @@ function makeGuess() {
         url: '/wordgame/api/v1/' + sid+'/'+currentGameObj.id,
         data:{"sid":sid,"gid":currentGameObj.id,"guess":guessLetter},
         success: function (data) {
-         console.log(data);
+        if(data=="repeat guess") alert(data)
+            else showGame(data);
         }
     })
 }
@@ -120,6 +100,7 @@ function showTable(data) {
     var count = Object.keys(data).length;
     for (var x = 0; x < count; x++) {
         var row = document.createElement("tr");
+        row.setAttribute("onclick","showGame(this,"+data[x]+" )");
         var td1 = document.createElement("td");
         td1.height='40px';
         td1.appendChild(document.createTextNode(data[x].level.name));
@@ -139,5 +120,46 @@ function showTable(data) {
         row.appendChild(td5);
     }
     document.getElementById("gameList").append(row); //将行添加到<tbody>中
+}
+
+function showGame(data) {
+    $('#wordview').html("");
+    $('#guesses').html("");
+    $('#lettleinput').val("");
+    $('#remaining').html(data.remaining);
+    for(var x=0;x<data.view.length;x++)
+    {
+        var label = document.createElement("label");
+        label.style.width="30px";
+        label.style.height="50px";
+        label.style.textAlign= "center";
+        label.style.background=data.colors.wordBackground;
+        label.style.fontSize="30px";
+        label.style.color=data.colors.textBackground;
+        //var span = document.createElement("span");
+        label.appendChild(document.createTextNode(data.view[x]));
+        //label.appendChild(span);
+        $('#wordview').append(label);
+        $('#wordview').append(" ");
+
+    }
+
+    for(var x=0;x<data.guesses.length;x++)
+    {
+        var label = document.createElement("label");
+        label.style.width="20px";
+        label.style.height="30px";
+        label.style.textAlign= "center";
+        label.style.background=data.colors.guessBackground;
+        label.style.fontSize="30px";
+        label.style.color=data.colors.textBackground;
+        //var span = document.createElement("span");
+        label.appendChild(document.createTextNode(data.guesses[x]));
+        //label.appendChild(span);
+        $('#guesses').append(label);
+        $('#guesses').append(" ");
+
+    }
+
 }
 

@@ -49,7 +49,7 @@ function createWordDb() {
 
 function getWord(min,max) {
     while(true) {
-        var randomNum= Math.floor(Math.random()*41238);
+        var randomNum= Math.floor(Math.random()*wordDb.length);
     if(wordDb[randomNum].length<=max&&wordDb[randomNum].length>=min) {
         return wordDb[randomNum];
     }
@@ -60,9 +60,13 @@ function getWord(min,max) {
 
 function createGame(colors,font,level) {
    var target=getWord(level.minLength,level.maxLength);
-    //console.log(target);
     var timestamp = Date.parse(new Date());
-    var gameObj=new Game(colors,font,"",level,level.rounds,"unfinished",target,timestamp,"",target);
+    var view="";
+    for(var x=0;x<target.length;x++) {
+       view+="_";
+    }
+
+    var gameObj=new Game(colors,font,"",level,level.rounds,"unfinished",target,timestamp,"",view);
     return gameObj;
 }
 
@@ -129,19 +133,35 @@ router.post('/wordgame/api/v1/:sid', function(req, res, next) {
 
 
 router.post('/wordgame/api/v1/:sid/:gid', function(req, res, next) {
-
-    var sid=req.body.sid;
-    var gid=req.body.gid;
     var guess=req.body.guess;
-    for(a in gamesDb[req.params.sid])
-    {
-        if(a.id==gid)
-        {
-           var position = findLetter(a.target,guess);
+    var gamelist=gamesDb[req.body.sid];
+    for(var a=0;a<gamelist.length;a++){
+       // console.log("-------------------"+gamelist[a].id +"--------"+req.body.sid);
+        if(gamelist[a].id==(req.body.gid)&&gamelist[a].guesses.indexOf(guess)==-1){
+           var position = findLetter(gamelist[a].target,guess);
+            var view= gamelist[a].view;
+            String.prototype.replaceAt=function(index, char) {
+                var a = this.split("");
+                a[index] = char;
+                return a.join("");
+            }
+           if(position.length>=1){
+               for(var x=0;x<position.length;x++){
+                   view = view.replaceAt(position[x], guess);
+               }
+           }
+             console.log("View:"+view +"position:"+position);
+             gamelist[a].view=view;
+            gamelist[a].remaining-=1;
+            gamelist[a].guesses += guess;
+            console.log(gamelist[a]);
+             res.send(gamelist[a]);
+        }
+        else{
+            res.send("repeat guess");
         }
     }
 
-    res.send(result);
 });
 
 
