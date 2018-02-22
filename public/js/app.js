@@ -113,8 +113,25 @@ function showTable(data) {
         td1.appendChild(document.createTextNode(data[x].level.name));
         row.appendChild(td1);
         var td2 = document.createElement("td");
-        td2.appendChild(document.createTextNode(data[x].view));
-        row.appendChild(td2);
+        for(var t=0;t<(data[x].view).length;t++)
+        {
+            var label = document.createElement("label");
+            label.style.width="30px";
+            label.style.height="40px";
+            label.style.textAlign= "center";
+            label.style.background=data[x].colors.wordBackground;
+            //label.style.fontSize="30px";
+            label.style.fontFamily=data[x].font.rule;
+            label.style.color=data[x].colors.textBackground;
+            //var span = document.crea.teElement("span");
+            label.appendChild(document.createTextNode((data[x].view)[x]));
+            //label.appendChild(span);
+            td2.append(label);
+            td2.append(" ");
+
+        }
+        // td2.appendChild(document.createTextNode(data[x].view));
+         row.appendChild(td2);
         var td3 = document.createElement("td");
         td3.appendChild(document.createTextNode(data[x].remaining));
         row.appendChild(td3);
@@ -159,6 +176,7 @@ function showGame(data) {
         label.style.textAlign= "center";
         label.style.background=data.colors.wordBackground;
         label.style.fontSize="30px";
+        label.style.fontFamily=data.font.rule;
         label.style.color=data.colors.textBackground;
         //var span = document.createElement("span");
         label.appendChild(document.createTextNode(data.view[x]));

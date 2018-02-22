@@ -42,7 +42,7 @@ function createWordDb() {
 });
 
     objReadline.on('close', ()=>{
-        console.log('readline close...');
+        //console.log('readline close...');
 });
 
 }
@@ -135,12 +135,14 @@ router.post('/wordgame/api/v1/:sid', function(req, res, next) {
 
 router.post('/wordgame/api/v1/:sid/:gid', function(req, res, next) {
     var guess=req.body.guess;
+    var sid=req.body.sid;
+    var gid=req.body.gid;
     var gamelist=gamesDb[req.body.sid];
-    console.log("gamelist:"+gamesDb);
+    console.log("gamelist length:"+gamelist.length);
     for(var a=0;a<gamelist.length;a++){
-        console.log("-------------------"+gamelist[a].id +"--------"+req.body.gid);
-        console.log("condition"+gamelist[a].id==(req.body.gid) +"--------"+((gamelist[a].guesses).indexOf(guess)==-1));
-        if((gamelist[a].id)==(req.body.gid)&&((gamelist[a].guesses).indexOf(guess)==-1)){
+        console.log("-------------------"+gamelist[a].id +"--------"+gid);
+        console.log("condition"+gamelist[a].id==gid +"--------"+((gamelist[a].guesses).indexOf(guess)==-1));
+        if((gamelist[a].id)==(gid)&&((gamelist[a].guesses).indexOf(guess)==-1)){
            var position = findLetter(gamelist[a].target,guess);
             var view= gamelist[a].view;
             String.prototype.replaceAt=function(index, char) {
