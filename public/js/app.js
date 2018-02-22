@@ -48,8 +48,7 @@ div2.style.display='none';
 
 
 function newGame() {
-    div1.style.display='none';
-    div2.style.display='block';
+
     var font=$('#font').val();
     var diff=$('#diff').val();
     var wordcolor=$('#wordcolor').val();
@@ -61,7 +60,7 @@ function newGame() {
         data:{"font":font,"level": diff,"wordcolor":wordcolor,"guesscolor":guesscolor,"forecolor":forecolor},
         method: "POST",
         success:function (data) {
-            console.log(data);
+           // console.log(data);
             currentGameObj=data;
             showGame(data);
         }
@@ -85,6 +84,7 @@ function closeGame() {
 var currentGameObj;
 function makeGuess() {
     var guessLetter=$('#letter').val();
+    $('#letter').val("");
     $.ajax({
         type: "POST",
         url: '/wordgame/api/v1/' + sid+'/'+currentGameObj.id,
@@ -97,10 +97,17 @@ function makeGuess() {
 }
 
 function showTable(data) {
+    $('#hi').html("");
     var count = Object.keys(data).length;
     for (var x = 0; x < count; x++) {
         var row = document.createElement("tr");
-        row.setAttribute("onclick","showGame(this,"+data[x]+" )");
+
+       // row.setAttribute("onclick","showGame("+data[x]+")");
+        var gid=data[x].id;
+        row.id=gid;
+          row.onclick= function(){
+              retrieveGame(this,gid);
+          };
         var td1 = document.createElement("td");
         td1.height='40px';
         td1.appendChild(document.createTextNode(data[x].level.name));
@@ -118,20 +125,31 @@ function showTable(data) {
         var td5 = document.createElement("td");
         td5.appendChild(document.createTextNode(data[x].status));
         row.appendChild(td5);
+        document.getElementById("hi").append(row);
     }
-    document.getElementById("gameList").append(row); //将行添加到<tbody>中
+
 }
 
 function showGame(data) {
+    div1.style.display='none';
+    div2.style.display='block';
+    console.log(data);
+    var guessform=document.getElementById("guessform");
     $('#wordview').html("");
     $('#guesses').html("");
-    $('#lettleinput').val("");
+    $('#letter').val("");
     $('#remaining').html(data.remaining);
+    var div=document.getElementById("gamepage");
     if(data.status=="victory")
     {
-        $('#wordview').style.background=url("public/winner.gif");
+        div.style.backgroundImage="url(http://charity.cs.uwlax.edu/views/cs402/homeworks/hw2/images/winner.gif)";
+        guessform.style.display ='none';
     }else if(data.status=="loss"){
-        $('#wordview').style.background=url("public/cry.gif");
+        div.style.backgroundImage="url(http://charity.cs.uwlax.edu/views/cs402/homeworks/hw2/images/cry.gif)";
+        guessform.style.display ='none';
+    }else{
+        div.style.backgroundImage="";
+        guessform.style.display ='block';
     }
     for(var x=0;x<data.view.length;x++)
     {
@@ -167,5 +185,17 @@ function showGame(data) {
 
     }
 
+}
+
+
+function retrieveGame(thisObj,gid) {
+ ngid=thisObj.id;
+    $.ajax({
+        type: "GET",
+        url: '/wordgame/api/v1/' + sid+'/'+ngid,
+        success: function (data) {
+          showGame(data);
+        }
+    })
 }
 

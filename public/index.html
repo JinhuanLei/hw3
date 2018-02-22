@@ -66,6 +66,7 @@
 
     <div class="col-md-10 col-md-offset-1 well well-sm" id="gametable">
         <table style="width:100%" id="gameList" >
+            <thead>
             <tr>
                 <th>Level</th>
                 <th>Phrase</th>
@@ -73,21 +74,22 @@
                 <th>Answer</th>
                 <th>Status</th>
             </tr>
-
+            </thead>
+            <tbody id="hi"></tbody>
         </table>
     </div>
     </div>
 
     <div id="page2">
-    <div class="col-md-10 col-md-offset-1 well well-sm">
+    <div class="col-md-10 col-md-offset-1 well well-sm" id="gamepage">
         <!--<div class="modal-header">-->
             <div>
         <button type="submit" class="btn btn-danger" style="float:right" onclick="closeGame()"><span aria-hidden="true" >&times;</span></button>
-            <form class="form-inline" target="nm_iframe">
+            <form class="form-inline" target="nm_iframe" id="guessform">
                 <div class="form-group">
                     <label id="remaining"></label>
                     <label>guesses remaining.</label>&nbsp;&nbsp;&nbsp;
-                    <input type="text" class="form-control" style="width: 50px" id="letter" id="lettleinput">
+                    <input type="text" class="form-control" style="width: 50px" id="letter" >
                     <button type="submit" onclick="makeGuess()" class="btn btn-primary">Guess</button>
                 </div>
             </form>
