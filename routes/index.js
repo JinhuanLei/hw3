@@ -151,10 +151,18 @@ router.post('/wordgame/api/v1/:sid/:gid', function(req, res, next) {
                }
            }
              console.log("View:"+view +"position:"+position);
-             gamelist[a].view=view;
+           gamelist[a].view=view;
+            if(view.indexOf("_")==-1)
+            {
+                gamelist[a].status="victory";
+            }
             gamelist[a].remaining-=1;
+            if(gamelist[a].remaining==-1&&!(gamelist[a].status="victory"))
+            {
+                gamelist[a].status="loss";
+            }
             gamelist[a].guesses += guess;
-            console.log(gamelist[a]);
+            //console.log(gamelist[a]);
              res.send(gamelist[a]);
         }
         else{

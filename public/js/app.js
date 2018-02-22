@@ -127,6 +127,12 @@ function showGame(data) {
     $('#guesses').html("");
     $('#lettleinput').val("");
     $('#remaining').html(data.remaining);
+    if(data.status=="victory")
+    {
+        $('#wordview').style.background=url("public/winner.gif");
+    }else if(data.status=="loss"){
+        $('#wordview').style.background=url("public/cry.gif");
+    }
     for(var x=0;x<data.view.length;x++)
     {
         var label = document.createElement("label");
