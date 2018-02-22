@@ -62,10 +62,20 @@ function createGame(colors,font,level) {
    var target=getWord(level.minLength,level.maxLength);
     //console.log(target);
     var timestamp = Date.parse(new Date());
-    var gameObj=new Game(colors,font,"",level,level.rounds,"unfinished",target,timestamp,"","");
+    var gameObj=new Game(colors,font,"",level,level.rounds,"unfinished",target,timestamp,"",target);
     return gameObj;
 }
 
+function findLetter(str,subStr) {
+    var positions = new Array();
+        var pos = str.indexOf(subStr);
+        while(pos>-1){
+            positions.push(pos);
+            pos = str.indexOf(subStr,pos+1);
+        }
+
+    return positions;
+}
 
 router.get('/wordgame', function(req, res, next) {
 
@@ -116,5 +126,23 @@ router.post('/wordgame/api/v1/:sid', function(req, res, next) {
     gamesDb[req.params.sid].push(result);
     res.send(result);
 });
+
+
+router.post('/wordgame/api/v1/:sid/:gid', function(req, res, next) {
+
+    var sid=req.body.sid;
+    var gid=req.body.gid;
+    var guess=req.body.guess;
+    for(a in gamesDb[req.params.sid])
+    {
+        if(a.id==gid)
+        {
+           var position = findLetter(a.target,guess);
+        }
+    }
+
+    res.send(result);
+});
+
 
 module.exports = router;
