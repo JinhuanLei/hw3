@@ -5,6 +5,7 @@ $(document).ready(function () {
         type: "GET",
         url :  "/wordgame/api/v1/sid",
         success: function (data) {
+            console.log("sid:"+data);
       sid=data;
         }
     });
@@ -91,11 +92,17 @@ function makeGuess() {
         url: '/wordgame/api/v1/' + sid+'/'+currentGameObj.id,
         data:{"sid":sid,"gid":currentGameObj.id,"guess":guessLetter},
         success: function (data) {
-        if(data=="repeat guess") alert(data)
-            else showGame(data);
+
+            if(data=="repeat guess") alert(data)
+            else {
+                currentGameObj=data;
+                showGame(data);
+            }
         }
     })
 }
+
+
 
 function showTable(data) {
     $('#hi').html("");
@@ -121,12 +128,16 @@ function showTable(data) {
             label.style.height="40px";
             label.style.textAlign= "center";
             label.style.background=data[x].colors.wordBackground;
-            //label.style.fontSize="30px";
+            label.style.fontSize="30px";
             label.style.fontFamily=data[x].font.rule;
             label.style.color=data[x].colors.textBackground;
             //var span = document.crea.teElement("span");
             var text=(data[x].view).charAt(t);
-            label.appendChild(document.createTextNode(text));
+            // if(text=="_") {
+            //     label.appendChild(document.createTextNode(" "));
+            // }
+            // else
+                label.appendChild(document.createTextNode(text));
             //label.appendChild(span);
             td2.append(label);
             td2.append(" ");
@@ -150,7 +161,8 @@ function showTable(data) {
 }
 
 function showGame(data) {
-
+    div1.style.display='none';
+    currentGameObj=data;
     console.log(data);
     var guessform=document.getElementById("guessform");
     $('#wordview').html("");
@@ -191,7 +203,7 @@ function showGame(data) {
     {
         var label = document.createElement("label");
         label.style.width="20px";
-        label.style.height="30px";
+        label.style.height="40px";
         label.style.textAlign= "center";
         label.style.background=data.colors.guessBackground;
         label.style.fontSize="30px";
@@ -203,8 +215,9 @@ function showGame(data) {
         $('#guesses').append(" ");
 
     }
-    div1.style.display='none';
+
     div2.style.display='block';
+    // $('#page2').slideUp();
 }
 
 

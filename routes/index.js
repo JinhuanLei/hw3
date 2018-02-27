@@ -6,8 +6,9 @@ var level = require('../public/module/level');
 var colors = require('../public/module/colors');
 var metadata = require('../public/module/Metadata');
 var readline = require("readline");
-var gamesDb={};
+var gamesDb=[];
 var wordDb=[];
+
 
 
 function Game( colors, font, guesses, level,remaining,status,target,timestamp,timeToComplete,view ) {
@@ -50,7 +51,7 @@ function createWordDb() {
 function getWord(min,max) {
     while(true) {
         var randomNum= Math.floor(Math.random()*wordDb.length);
-        console.log("randomNum"+randomNum);
+        //console.log("randomNum"+randomNum);
     if(wordDb[randomNum].length<=max&&wordDb[randomNum].length>=min) {
         return wordDb[randomNum];
     }
@@ -91,7 +92,7 @@ router.get('/wordgame/api/v1/sid', function(req, res, next) {
    // req.session.regenerate(function (err) {
    //     console.log(req.session);
     createWordDb();
-    gamesDb[req.sessionID]=[];
+    //gamesDb[req.sessionID]=[];
        res.send(req.sessionID);
    // })
 });
@@ -128,20 +129,39 @@ router.post('/wordgame/api/v1/:sid', function(req, res, next) {
     console.log(req.body.font);
     var levelObj=level.getLevelObj(req.body.level)
     var result=createGame(colorObj,fontObj,levelObj);
+    if(!gamesDb[req.params.sid]) {
+        gamesDb[req.params.sid]=[];
+    }
     gamesDb[req.params.sid].push(result);
     res.send(result);
 });
+
 
 
 router.post('/wordgame/api/v1/:sid/:gid', function(req, res, next) {
     var guess=req.body.guess;
     var sid=req.body.sid;
     var gid=req.body.gid;
-    var gamelist=gamesDb[req.body.sid];
-    console.log("gamelist length:"+gamelist.length);
+    var gamelist=gamesDb[sid];
+    console.log("sid1:"+sid+"sid2:"+req.params.sid);
+    var list=eval(gamelist);
+    console.log("gamelist :"+list);
+    console.log("gamelist length 1:"+gamelist.length);
+
+    // var flag=false;
+    // for(var t=0;t<gamelist.length;t++){
+    //     if((gamelist[t].id)==(gid)){
+    // flag=true;
+    //     }
+    // }
+    // if(flag==false){
+    //     console.log("obj:"+req.body.obj);
+    //     gamelist.push(req.body.obj);
+    // }
+
     for(var a=0;a<gamelist.length;a++){
-        console.log("-------------------"+gamelist[a].id +"--------"+gid);
-        console.log("condition"+gamelist[a].id==gid +"--------"+((gamelist[a].guesses).indexOf(guess)==-1));
+        //console.log("-------------------"+gamelist[a].id +"--------"+gid);
+        //console.log("condition:"+(gamelist[a].id==gid));
         if((gamelist[a].id)==(gid)&&((gamelist[a].guesses).indexOf(guess)==-1)){
            var position = findLetter(gamelist[a].target,guess);
             var view= gamelist[a].view;
@@ -169,12 +189,15 @@ router.post('/wordgame/api/v1/:sid/:gid', function(req, res, next) {
             }
             gamelist[a].guesses += guess;
             //console.log(gamelist[a]);
-             res.send(gamelist[a]);
+            var result=gamelist[a];
+            console.log("gamelist length 2:"+gamelist.length);
+            res.send(result);
+
         }
 
     }
 
-        res.send("repeat guess");
+       res.send("repeat guess");
 
 });
 
