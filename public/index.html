@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-    <title>Bootstrap 101 Template</title>
+    <title>Grammer Guru</title>
 
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Anton|Bellefair|Cabin|Indie+Flower|Kavivanar|Lato|Lobster|Montserrat|Mukta+Mahee|Open+Sans|Oswald|Pacifico|Roboto|Roboto+Condensed|Slabo+27px|Ubuntu" rel="stylesheet">
@@ -16,98 +16,98 @@
 <br>
 <div class=" row">
     <div id="page1">
-    <div class="col-md-10 col-md-offset-1 well well-sm">
-   <div >
-            <form class="form-inline" >
-                <div class="col-md-3">
-                    <label>Font</label>&nbsp
-                    <select class="form-control" style="" id="font">
-                    </select>
-                </div>
+        <div class="col-md-10 col-md-offset-1 well well-sm">
+            <div >
+                <form class="form-inline" >
+                    <div class="col-md-3">
+                        <label>Font</label>&nbsp
+                        <select class="form-control" style="" id="font">
+                        </select>
+                    </div>
 
-                <div class="col-md-2">
-                    <label>Level</label> &nbsp
-                    <select class="form-control" id="diff">
+                    <div class="col-md-2">
+                        <label>Level</label> &nbsp
+                        <select class="form-control" id="diff">
 
-                    </select>
-                </div>
+                        </select>
+                    </div>
 
-                <div class="form-group col-md-5">
-                    <!--<label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>-->
-                    <div class="input-group">
-                        <div class="input-group-addon">Word</div>
+                    <div class="form-group col-md-5">
+                        <!--<label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>-->
+                        <div class="input-group">
+                            <div class="input-group-addon">Word</div>
 
-                        <input type="color" class="form-control"  id="wordcolor" style="width: 150%" >
+                            <input type="color" class="form-control"  id="wordcolor" style="width: 150%" >
+
+                        </div>
+                        &nbsp; &nbsp;
+                        <div class="input-group">
+                            <div class="input-group-addon">Guess</div>
+
+                            <input type="color" class="form-control"  id="guesscolor" style="width: 150%" >
+
+                        </div> &nbsp; &nbsp;
+                        <div class="input-group">
+                            <div class="input-group-addon">Fore</div>
+
+                            <input type="color" class="form-control"  id="forecolor" style="width: 150%" >
+                        </div>
+                        &nbsp; &nbsp;
 
                     </div>
-                    &nbsp; &nbsp;
-                    <div class="input-group">
-                        <div class="input-group-addon">Guess</div>
+                </form>
 
-                        <input type="color" class="form-control"  id="guesscolor" style="width: 150%" >
-
-                    </div> &nbsp; &nbsp;
-                    <div class="input-group">
-                        <div class="input-group-addon">Fore</div>
-
-                        <input type="color" class="form-control"  id="forecolor" style="width: 150%" >
-                    </div>
-                    &nbsp; &nbsp;
-
+                <div class="col-md-1">
+                    <button type="submit" onclick="newGame()" class="btn btn-primary">New Game</button>
                 </div>
-            </form>
+            </div>
+        </div>
 
-    <div class="col-md-1">
-        <button type="submit" onclick="newGame()" class="btn btn-primary">New Game</button>
-    </div>
+
+        <div class="col-md-10 col-md-offset-1 well well-sm" id="gametable">
+            <table style="width:100%" id="gameList" >
+                <thead>
+                <tr>
+                    <th>Level</th>
+                    <th>Phrase</th>
+                    <th>Remaining</th>
+                    <th>Answer</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tbody id="hi"></tbody>
+            </table>
         </div>
     </div>
 
-
-    <div class="col-md-10 col-md-offset-1 well well-sm" id="gametable">
-        <table style="width:100%" id="gameList" >
-            <thead>
-            <tr>
-                <th>Level</th>
-                <th>Phrase</th>
-                <th>Remaining</th>
-                <th>Answer</th>
-                <th>Status</th>
-            </tr>
-            </thead>
-            <tbody id="hi"></tbody>
-        </table>
-    </div>
-    </div>
-
     <div id="page2">
-    <div class="col-md-10 col-md-offset-1 well well-sm" id="gamepage">
-        <!--<div class="modal-header">-->
+        <div class="col-md-10 col-md-offset-1 well well-sm" id="gamepage">
+            <!--<div class="modal-header">-->
             <div>
-        <button type="submit" class="btn btn-danger" style="float:right" onclick="closeGame()"><span aria-hidden="true" >&times;</span></button>
-            <form class="form-inline" target="nm_iframe" id="guessform">
-                <div class="form-group">
-                    <label id="remaining"></label>
-                    <label>guesses remaining.</label>&nbsp;&nbsp;&nbsp;
-                    <input type="text" class="form-control" style="width: 50px" id="letter" >
-                    <button type="submit" onclick="makeGuess()" class="btn btn-primary">Guess</button>
-                </div>
-            </form>
+                <button type="submit" class="btn btn-danger" style="float:right" onclick="closeGame()"><span aria-hidden="true" >&times;</span></button>
+                <form class="form-inline" target="nm_iframe" id="guessform">
+                    <div class="form-group">
+                        <label id="remaining"></label>
+                        <label>guesses remaining.</label>&nbsp;&nbsp;&nbsp;
+                        <input type="text" class="form-control" style="width: 50px" id="letter" >
+                        <button type="submit" onclick="makeGuess()" class="btn btn-primary">Guess</button>
+                    </div>
+                </form>
                 <iframe id="id_iframe" name="nm_iframe" style="display:none;"></iframe>
 
 
             </div>
-        <br>
-        <div class="col-md-3 col-md-offset-9" style="text-align: right" id="guesses" >
+            <br>
+            <div class="col-md-3 col-md-offset-9" style="text-align: right" id="guesses" >
+
+            </div>
+            <br>
+            <div class="col-md-5" id="wordview" >
+
+            </div>
+
 
         </div>
-        <br>
-        <div class="col-md-5" id="wordview" >
-
-        </div>
-
-
-    </div>
 
     </div>
 </div>
