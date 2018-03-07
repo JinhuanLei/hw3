@@ -88,15 +88,7 @@ router.get('/wordgame', function(req, res, next) {
     res.sendFile( 'index.html', { root : __dirname + "/../public" } );
 });
 
-router.get('/wordgame/api/v1/sid', function(req, res, next) {
-    // req.session.regenerate(function (err) {
-    //     console.log(req.session);
-    createWordDb();
-    //gamesDb[req.sessionID]=[];
-    res.setHeader('X-sid',req.sessionID);
-    res.send(req.sessionID);
-    // })
-});
+
 
 router.get('/wordgame/api/v1/meta/fonts', function(req, res, next) {
     var result = [];

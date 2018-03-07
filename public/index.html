@@ -11,7 +11,30 @@
     <link href="https://fonts.googleapis.com/css?family=Anton|Bellefair|Cabin|Indie+Flower|Kavivanar|Lato|Lobster|Montserrat|Mukta+Mahee|Open+Sans|Oswald|Pacifico|Roboto|Roboto+Condensed|Slabo+27px|Ubuntu" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
 </head>
-<body>
+<body class="fullpage">
+<div id="login" style="margin-top: 200px">
+<br>
+
+    <form id="login-form" class="pull-right" target="nm_iframe">
+        <h3>Howdy Partner</h3>
+        <div>
+            <div>
+                <div class="form-group">
+                    <label for="lg_username" class="sr-only">Username</label>
+                    <input type="text" class="form-control" id="login_username" placeholder="username">
+                </div>
+                <div class="form-group">
+                    <label for="lg_password" class="sr-only">Password</label>
+                    <input type="password" class="form-control" id="login_password" placeholder="password">
+                </div>
+            </div>
+            <button type="submit" onclick="login(event)" class="btn btn-primary btn-sm">Login
+                <i class="glyphicon glyphicon-chevron-right"></i>
+            </button>
+        </div>
+    </form>
+</div>
+
 <br>
 <br>
 <div class=" row">
