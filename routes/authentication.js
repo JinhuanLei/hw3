@@ -26,6 +26,7 @@ router.post('/wordgame/api/v2/login',function (req,res,next) {
                 res.set({
                     //'Set-Cookie': 'mycookiesid='+req.sessionID,
                     "CSRF-Token":uuid()
+                    //111
                 });
                 res.send(user);
             }

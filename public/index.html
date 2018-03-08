@@ -6,33 +6,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
     <title>Grammer Guru</title>
+    <link rel="stylesheet" href="stylesheets/style.css">
 
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Anton|Bellefair|Cabin|Indie+Flower|Kavivanar|Lato|Lobster|Montserrat|Mukta+Mahee|Open+Sans|Oswald|Pacifico|Roboto|Roboto+Condensed|Slabo+27px|Ubuntu" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
 </head>
 <body class="fullpage">
-<div id="login" style="margin-top: 200px">
-<br>
+<div id="login" style="position: relative; top:200px; ">
+    <!--<form id="login-form"  target="nm_iframe">-->
+        <!--<h3>Grammer Guru</h3>-->
+        <!--<div>-->
+            <!--<div>-->
+                <!--<div class="form-group">-->
+                    <!--<label for="lg_username" class="sr-only">Username</label>-->
+                    <!--<input type="text" class="form-control" id="login_username" placeholder="username">-->
+                <!--</div>-->
+                <!--<div class="form-group">-->
+                    <!--<label for="lg_password" class="sr-only">Password</label>-->
+                    <!--<input type="password" class="form-control" id="login_password" placeholder="password">-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<button type="submit" onclick="login()" class="btn btn-primary btn-sm">Login-->
+                <!--<i class="glyphicon glyphicon-chevron-right"></i>-->
+            <!--</button>-->
+        <!--</div>-->
+    <!--</form>-->
+    <div class="wrapper" >
+        <form class="form-signin">
+            <h2 class="form-signin-heading">Please login</h2>
+            <br>
+            <input type="text" class="form-control" name="username" id="login_username" placeholder="Email Address" required="" autofocus="" />
 
-    <form id="login-form" class="pull-right" target="nm_iframe">
-        <h3>Howdy Partner</h3>
-        <div>
-            <div>
-                <div class="form-group">
-                    <label for="lg_username" class="sr-only">Username</label>
-                    <input type="text" class="form-control" id="login_username" placeholder="username">
-                </div>
-                <div class="form-group">
-                    <label for="lg_password" class="sr-only">Password</label>
-                    <input type="password" class="form-control" id="login_password" placeholder="password">
-                </div>
-            </div>
-            <button type="submit" onclick="login()" class="btn btn-primary btn-sm">Login
-                <i class="glyphicon glyphicon-chevron-right"></i>
-            </button>
-        </div>
-    </form>
+            <input style="margin-top: 10px" type="password" class="form-control" id="login_password" name="password" placeholder="Password" required=""/>
+
+            <br>
+            <button class="btn btn-lg btn-primary btn-block" type="submit" onclick="login()">Login</button>
+        </form>
+    </div>
 </div>
 
 <div class="row">
