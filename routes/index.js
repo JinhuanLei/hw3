@@ -208,15 +208,7 @@ router.get('/wordgame/api/v1/:sid/:gid', function(req, res, next) {
     }
 });
 
-router.get('/wordgame/api/v2/uid', function(req, res, next) {
 
-    var user = req.session.user;
-    if( user ) {
-        res.json( user );
-    } else {
-        res.status( 403 ).send( 'Forbidden' );
-    }
-});
 
 
 

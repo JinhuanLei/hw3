@@ -1,3 +1,4 @@
+
 var express = require('express');
 var session = require('express-session');
 var path = require('path');
@@ -25,9 +26,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
     secret: 'A SECRET KEY. SHOULD BE UNIQE TO THE APP. DONT EVER SHOW IT TO ANYONE', //secret的值建议使用随机字符串
     resave : true,
-    saveUninitialized : true
+    saveUninitialized : true,
+
 
 }));
+
 app.use('/', index);
 //app.use('/',game);
 app.use('/', authentication);
