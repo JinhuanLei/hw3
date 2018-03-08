@@ -15,7 +15,7 @@ router.post('/wordgame/api/v2/login',function (req,res,next) {
                     res.send(user);
                 }
                 else{
-                    res.send("error");
+                    res.status( 403 ).send( 'Forbidden' );
                 }
     })
 
