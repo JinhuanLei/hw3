@@ -2,13 +2,8 @@ var userid;
 var sid;
 $(document).ready(function () {
 
-    $.ajax({
-        type: "GET",
-        url :  "/wordgame/api/v2/uid",
-        success : setUser,
-        error : setPage()
+    validateUser();
 
-});
 
     $.ajax({
         type: "GET",
@@ -47,6 +42,15 @@ div2.style.display='none';
 // var Metadata=new Object();
 // var Defaults=new Object();
 // var Game=new Object();
+
+function validateUser() {
+    $.ajax({
+        type: "GET",
+        url :  "/wordgame/api/v2/uid",
+        success : setUser,
+        error : setPage()
+    });
+}
 
 function setPage() {
     div1.style.display="none";
@@ -243,9 +247,35 @@ function retrieveGame(thisObj,gid) {
     })
 }
 
-
-function login(evt)
-{
+function changPage() {
     div1.style.display="block";
     logindiv.style.display="none";
+}
+
+
+function login()
+{
+    var email=$('#login_username').val();
+    var password=$('#login_password').val();
+    $.ajax({
+        type: "POST",
+        url: '/wordgame/api/v2/login',
+        data:{"email":email,"password":password},
+        success: function (data) {
+            div1.style.display="block";
+            logindiv.style.display="none";
+        }
+    })
+}
+
+
+function logout() {
+    $.ajax({
+        type: "POST",
+        url: '/wordgame/api/v2/logout',
+        success: function (data) {
+            div1.style.display="none";
+            logindiv.style.display="block";
+        }
+    })
 }

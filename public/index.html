@@ -28,17 +28,19 @@
                     <input type="password" class="form-control" id="login_password" placeholder="password">
                 </div>
             </div>
-            <button type="submit" onclick="login(event)" class="btn btn-primary btn-sm">Login
+            <button type="submit" onclick="login()" class="btn btn-primary btn-sm">Login
                 <i class="glyphicon glyphicon-chevron-right"></i>
             </button>
         </div>
     </form>
 </div>
 
-<br>
-<br>
-<div class=" row">
+<div class="row">
+
     <div id="page1">
+        <nav class="navbar navbar-inverse">
+            <button type="button" class="btn btn-default navbar-btn navbar-right" style="margin-right: 20px" onclick="logout()">Log Out</button>
+        </nav>
         <div class="col-md-10 col-md-offset-1 well well-sm">
             <div >
                 <form class="form-inline" >
