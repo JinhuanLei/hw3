@@ -31,6 +31,7 @@ $(document).ready(function () {
 
         }
     });
+    // closeGame();
 })
 var div1=document.getElementById("page1");
 var div2=document.getElementById("page2");
@@ -57,9 +58,12 @@ function setPage() {
     logindiv.style.display="block";
 }
 
-function setUser() {
+function setUser(user) {
+    userid=user._id;
     div1.style.display="block";
     logindiv.style.display="none";
+    closeGame();
+
 
 }
 
@@ -70,7 +74,6 @@ function newGame() {
     var wordcolor=$('#wordcolor').val();
     var guesscolor=$('#guesscolor').val();
     var forecolor=$('#forecolor').val();
-
     $.ajax({
         url: '/wordgame/api/v1/'+userid,
         data:{"font":font,"level": diff,"wordcolor":wordcolor,"guesscolor":guesscolor,"forecolor":forecolor},
@@ -86,7 +89,6 @@ function newGame() {
 
 
 function closeGame() {
-
     $.ajax({
         type: "GET",
         url: '/wordgame/api/v1/' + userid,
@@ -104,11 +106,12 @@ function closeGame() {
 var currentGameObj;
 function makeGuess() {
     var guessLetter=$('#letter').val();
+    //document.getElementById('letter').focus();
     $('#letter').val("");
     $.ajax({
         type: "POST",
-        url: '/wordgame/api/v1/' + sid+'/'+currentGameObj.id,
-        data:{"sid":sid,"gid":currentGameObj.id,"guess":guessLetter},
+        url: '/wordgame/api/v1/' + userid+'/'+currentGameObj._id,
+        data:{"userid":userid,"gid":currentGameObj._id,"guess":guessLetter},
         success: function (data) {
 
             if(data=="repeat guess") alert(data)
@@ -234,7 +237,7 @@ function showGame(data) {
     }
 
     div2.style.display='block';
-    // $('#page2').slideUp();
+    document.getElementById('letter').focus();
 }
 
 
@@ -267,6 +270,7 @@ function login()
             div1.style.display="block";
             logindiv.style.display="none";
             userid=data._id;
+            closeGame();
             console.log("id"+userid);
             console.log(data);
         }

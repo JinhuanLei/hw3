@@ -33,16 +33,17 @@
         <!--</div>-->
     <!--</form>-->
     <div class="wrapper" >
-        <form class="form-signin" target="nm_iframe">
+        <form class="form-signin" target="nm_iframe1">
             <h2 class="form-signin-heading">Please login</h2>
             <br>
-            <input type="text" class="form-control" name="username" id="login_username" placeholder="Email Address" required="" autofocus="" />
+            <input type="text" class="form-control" name="username" id="login_username" placeholder="Email Address" required=""  />
 
             <input style="margin-top: 10px" type="password" class="form-control" id="login_password" name="password" placeholder="Password" required=""/>
 
             <br>
             <button class="btn btn-lg btn-primary btn-block" type="submit" onclick="login()">Login</button>
         </form>
+        <iframe id="id_iframe1" name="nm_iframe1" style="display:none;"></iframe>
     </div>
 </div>
 
@@ -125,7 +126,7 @@
                     <div class="form-group">
                         <label id="remaining"></label>
                         <label>guesses remaining.</label>&nbsp;&nbsp;&nbsp;
-                        <input type="text" class="form-control" style="width: 50px" id="letter" >
+                        <input type="text" class="form-control" style="width: 50px" id="letter" autofocus="" >
                         <button type="submit" onclick="makeGuess()" class="btn btn-primary">Guess</button>
                     </div>
                 </form>

@@ -85,7 +85,6 @@ function findLetter(str,subStr) {
 }
 
 router.get('/wordgame', function(req, res, next) {
-
     res.sendFile( 'index.html', { root : __dirname + "/../public" } );
 });
 
@@ -147,15 +146,15 @@ router.post('/wordgame/api/v1/:userid', function(req, res, next) {
 
 
 
-router.post('/wordgame/api/v1/:sid/:gid', function(req, res, next) {
+router.post('/wordgame/api/v1/:userid/:gid', function(req, res, next) {
     var guess=req.body.guess;
-    var sid=req.body.sid;
+    var uid=req.body.userid;
     var gid=req.body.gid;
-    var gamelist=gamesDb[sid];
-    console.log("sid1:"+sid+"sid2:"+req.params.sid);
-    var list=eval(gamelist);
-    console.log("gamelist :"+list);
-    console.log("gamelist length 1:"+gamelist.length);
+    // var gamelist=gamesDb[sid];
+    // console.log("sid1:"+sid+"sid2:"+req.params.sid);
+    // var list=eval(gamelist);
+    // console.log("gamelist :"+list);
+    // console.log("gamelist length 1:"+gamelist.length);
 
     // var flag=false;
     // for(var t=0;t<gamelist.length;t++){
@@ -168,12 +167,10 @@ router.post('/wordgame/api/v1/:sid/:gid', function(req, res, next) {
     //     gamelist.push(req.body.obj);
     // }
 
-    for(var a=0;a<gamelist.length;a++){
-        //console.log("-------------------"+gamelist[a].id +"--------"+gid);
-        //console.log("condition:"+(gamelist[a].id==gid));
-        if((gamelist[a].id)==(gid)&&((gamelist[a].guesses).indexOf(guess)==-1)){
-            var position = findLetter(gamelist[a].target,guess);
-            var view= gamelist[a].view;
+    db.collection('Game').findOne({_id:gid},function (err,game) {
+        if((game.guesses).indexOf(guess)==-1){
+            var position = findLetter(game.target,guess);
+            var view= game.view;
             String.prototype.replaceAt=function(index, char) {
                 var a = this.split("");
                 a[index] = char;
@@ -185,28 +182,67 @@ router.post('/wordgame/api/v1/:sid/:gid', function(req, res, next) {
                 }
             }
             console.log("View:"+view +"position:"+position);
-            gamelist[a].view=view;
+            game.view=view;
             console.log("victory:"+view.indexOf("_"))
             if(view.indexOf("_")==-1)
             {
-                gamelist[a].status="victory";
+                game.status="victory";
             }
-            gamelist[a].remaining-=1;
-            if(gamelist[a].remaining==0&&(gamelist[a].status!="victory"))
+            game.remaining-=1;
+            if(game.remaining==0&&(game.status!="victory"))
             {
-                gamelist[a].status="loss";
+                game.status="loss";
             }
-            gamelist[a].guesses += guess;
-            //console.log(gamelist[a]);
-            var result=gamelist[a];
-            console.log("gamelist length 2:"+gamelist.length);
-            res.send(result);
-            return;
+            game.guesses += guess;
+
+            db.collection('Game').update(  { '_id' : gid },game, function(err, updated ) {
+                var result=game;
+                res.send(result);
+            } );
+    }else{
+            res.send("repeat guess");
         }
+    })
 
-    }
-
-    res.send("repeat guess");
+    // for(var a=0;a<gamelist.length;a++){
+    //     //console.log("-------------------"+gamelist[a].id +"--------"+gid);
+    //     //console.log("condition:"+(gamelist[a].id==gid));
+    //     if((gamelist[a].id)==(gid)&&((gamelist[a].guesses).indexOf(guess)==-1)){
+    //         var position = findLetter(gamelist[a].target,guess);
+    //         var view= gamelist[a].view;
+    //         String.prototype.replaceAt=function(index, char) {
+    //             var a = this.split("");
+    //             a[index] = char;
+    //             return a.join("");
+    //         }
+    //         if(position.length>=1){
+    //             for(var x=0;x<position.length;x++){
+    //                 view = view.replaceAt(position[x], guess);
+    //             }
+    //         }
+    //         console.log("View:"+view +"position:"+position);
+    //         gamelist[a].view=view;
+    //         console.log("victory:"+view.indexOf("_"))
+    //         if(view.indexOf("_")==-1)
+    //         {
+    //             gamelist[a].status="victory";
+    //         }
+    //         gamelist[a].remaining-=1;
+    //         if(gamelist[a].remaining==0&&(gamelist[a].status!="victory"))
+    //         {
+    //             gamelist[a].status="loss";
+    //         }
+    //         gamelist[a].guesses += guess;
+    //         //console.log(gamelist[a]);
+    //         var result=gamelist[a];
+    //         console.log("gamelist length 2:"+gamelist.length);
+    //         res.send(result);
+    //         return;
+    //     }
+    //
+    // }
+    //
+    // res.send("repeat guess");
 
 });
 
