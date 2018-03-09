@@ -6,6 +6,7 @@ var level = require('../public/module/level');
 var colors = require('../public/module/colors');
 var metadata = require('../public/module/Metadata');
 var readline = require("readline");
+//var users = require('./users.js');
 var gamesDb=[];
 var wordDb=[];
 var db=require("./db")
@@ -93,6 +94,11 @@ router.get('/wordgame', function(req, res, next) {
 router.get('/wordgame/api/v1/meta/fonts', function(req, res, next) {
     var result = [];
     var fontDb =font.getfontDb();
+    // for(var x in fontDb){
+    //     db.collection("Font").insertOne(fontDb[x],function (err,font) {
+    //
+    //     })
+    // }
     for( var key in fontDb ) {
         result.push( fontDb[ key ] );
     }
@@ -101,6 +107,7 @@ router.get('/wordgame/api/v1/meta/fonts', function(req, res, next) {
 
 router.get('/wordgame/api/v1/meta', function(req, res, next) {
     createWordDb();
+   // users.save();
     var resultmeta = [];
     var metadataObj =metadata.getMetadataobj();
     // result.push(metadataObj);
@@ -110,9 +117,6 @@ router.get('/wordgame/api/v1/meta', function(req, res, next) {
 
 router.get('/wordgame/api/v1/:userid', function(req, res, next) {
 var uid=req.params.userid;
-    //var result =gamesDb[req.params.sid];
-    // console.log(result);
-    // console.log("------------------------------------");
     db.collection('Game').find({userId:uid}).toArray(function(err,users){
         res.send(users);
     });
@@ -129,11 +133,6 @@ router.post('/wordgame/api/v1/:userid', function(req, res, next) {
     console.log(req.body.font);
     var levelObj=level.getLevelObj(req.body.level)
     var result=createGame(uid,colorObj,fontObj,levelObj);
-
-    // if(!gamesDb[req.params.sid]) {
-    //     gamesDb[req.params.sid]=[];
-    // }
-    // gamesDb[req.params.sid].push(result);
     db.collection("Game").insertOne(result,function (err) {
         if(err){
             res.send(err);

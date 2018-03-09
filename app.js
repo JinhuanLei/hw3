@@ -35,7 +35,7 @@ app.use(session({
 app.use('/', index);
 //app.use('/',game);
 app.use('/', authentication);
-app.use('/users', users);
+
 
 
 

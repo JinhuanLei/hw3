@@ -20,6 +20,8 @@ $(document).ready(function () {
         url :  "/wordgame/api/v1/meta",
         success: function (data) {
          //alert(data[0].defaults.font.category);
+            //alert(JSON.stringify(data[0].defaults));
+            console.log(data[0].defaults);
             $("#font").val(""+data[0].defaults.font.category+"").selected="selected";
             $.each(data[0].levels,function(index,value){
                 $("#diff").append("<option value='"+value.name+"'>"+value.name+"</option>");
@@ -93,7 +95,7 @@ function closeGame() {
         type: "GET",
         url: '/wordgame/api/v1/' + userid,
         success: function (data) {
-           console.log(data);
+           //console.log(data);
             showTable(data);
             div1.style.display = 'block';
             div2.style.display = 'none';
