@@ -8,11 +8,12 @@ var metadata = require('../public/module/Metadata');
 var readline = require("readline");
 var gamesDb=[];
 var wordDb=[];
+var db=require("./db")
 
 
-
-function Game( colors, font, guesses, level,remaining,status,target,timestamp,timeToComplete,view ) {
-    this.id = uuid();
+function Game( uid,colors, font, guesses,level,remaining,status,target,timestamp,timeToComplete,view ) {
+    this._id = uuid();
+    this.userId=uid;
     this.colors = colors;
     this.font = font;
     this.guesses=guesses;
@@ -26,7 +27,7 @@ function Game( colors, font, guesses, level,remaining,status,target,timestamp,ti
 }
 
 function createWordDb() {
-    var readline = require('readline');
+    // var readline = require('readline');
     var fs = require('fs');
     var os = require('os');
     var fReadName = 'public/wordlist.txt';
@@ -60,7 +61,7 @@ function getWord(min,max) {
 }
 
 
-function createGame(colors,font,level) {
+function createGame(uid,colors,font,level) {
     var target=getWord(level.minLength,level.maxLength);
     var timestamp = Date.parse(new Date());
     var view="";
@@ -68,7 +69,7 @@ function createGame(colors,font,level) {
         view+="_";
     }
 
-    var gameObj=new Game(colors,font,"",level,level.rounds,"unfinished",target,timestamp,"",view);
+    var gameObj=new Game(uid,colors,font,"",level,level.rounds,"unfinished",target,timestamp,"",view);
     return gameObj;
 }
 
@@ -108,28 +109,40 @@ router.get('/wordgame/api/v1/meta', function(req, res, next) {
     res.send(resultmeta);
 });
 
-router.get('/wordgame/api/v1/:sid', function(req, res, next) {
-
-    var result =gamesDb[req.params.sid];
+router.get('/wordgame/api/v1/:userid', function(req, res, next) {
+var uid=req.params.userid;
+    //var result =gamesDb[req.params.sid];
     // console.log(result);
     // console.log("------------------------------------");
+    db.collection('Game').find({userId:uid}).toArray(function(err,users){
+        res.send(users);
+    });
 
-    res.send(result);
+
+
 
 });
 
-router.post('/wordgame/api/v1/:sid', function(req, res, next) {
+router.post('/wordgame/api/v1/:userid', function(req, res, next) {
     var colorObj=colors.createColorObj(req.body.guesscolor,req.body.forecolor,req.body.wordcolor)
     var fontObj=font.searchFont(req.body.font);
+    var uid=req.params.userid;
     console.log(req.body.font);
     var levelObj=level.getLevelObj(req.body.level)
-    var result=createGame(colorObj,fontObj,levelObj);
-    if(!gamesDb[req.params.sid]) {
-        gamesDb[req.params.sid]=[];
-    }
-    gamesDb[req.params.sid].push(result);
+    var result=createGame(uid,colorObj,fontObj,levelObj);
 
-    res.send(result);
+    // if(!gamesDb[req.params.sid]) {
+    //     gamesDb[req.params.sid]=[];
+    // }
+    // gamesDb[req.params.sid].push(result);
+    db.collection("Game").insertOne(result,function (err) {
+        if(err){
+            res.send(err);
+        }else{
+            res.send(result);
+        }
+    })
+
 });
 
 

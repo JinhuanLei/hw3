@@ -72,12 +72,13 @@ function newGame() {
     var forecolor=$('#forecolor').val();
 
     $.ajax({
-        url: '/wordgame/api/v1/'+sid,
+        url: '/wordgame/api/v1/'+userid,
         data:{"font":font,"level": diff,"wordcolor":wordcolor,"guesscolor":guesscolor,"forecolor":forecolor},
         method: "POST",
         success:function (data) {
            // console.log(data);
             currentGameObj=data;
+            console.log(data);
             showGame(data);
         }
     });
@@ -88,12 +89,14 @@ function closeGame() {
 
     $.ajax({
         type: "GET",
-        url: '/wordgame/api/v1/' + sid,
+        url: '/wordgame/api/v1/' + userid,
         success: function (data) {
-           showTable(data);
+           console.log(data);
+            showTable(data);
             div1.style.display = 'block';
             div2.style.display = 'none';
-            }
+            },
+        // error: alert("error")
 
         })
 
@@ -124,7 +127,6 @@ function showTable(data) {
     var count = Object.keys(data).length;
     for (var x = 0; x < count; x++) {
         var row = document.createElement("tr");
-
        // row.setAttribute("onclick","showGame("+data[x]+")");
         var gid=data[x].id;
         row.id=gid;
@@ -264,6 +266,9 @@ function login()
         success: function (data) {
             div1.style.display="block";
             logindiv.style.display="none";
+            userid=data._id;
+            console.log("id"+userid);
+            console.log(data);
         }
     })
 }
