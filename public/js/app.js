@@ -7,7 +7,7 @@ $(document).ready(function () {
 
     $.ajax({
         type: "GET",
-        url :  "/wordgame/api/v1/meta/fonts",
+        url :  "/wordgame/api/v2/meta/fonts",
         success: function (data) {
             $.each(data,function(index,value){
                 $("#font").append("<option value='"+value.category+"'>"+value.category+"</option>");

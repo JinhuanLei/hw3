@@ -92,7 +92,7 @@ router.get('/wordgame', function(req, res, next) {
 
 
 
-router.get('/wordgame/api/v1/meta/fonts', function(req, res, next) {
+router.get('/wordgame/api/v2/meta/fonts', function(req, res, next) {
     var result = [];
     var fontDb =font.getfontDb();
     //users.save();
@@ -189,23 +189,6 @@ router.post('/wordgame/api/v1/:userid/:gid', function(req, res, next) {
     var guess=req.body.guess;
     var uid=req.body.userid;
     var gid=req.body.gid;
-    // var gamelist=gamesDb[sid];
-    // console.log("sid1:"+sid+"sid2:"+req.params.sid);
-    // var list=eval(gamelist);
-    // console.log("gamelist :"+list);
-    // console.log("gamelist length 1:"+gamelist.length);
-
-    // var flag=false;
-    // for(var t=0;t<gamelist.length;t++){
-    //     if((gamelist[t].id)==(gid)){
-    // flag=true;
-    //     }
-    // }
-    // if(flag==false){
-    //     console.log("obj:"+req.body.obj);
-    //     gamelist.push(req.body.obj);
-    // }
-
     db.collection('Game').findOne({_id:gid},function (err,game) {
         if((game.guesses).indexOf(guess)==-1){
             var position = findLetter(game.target,guess);
