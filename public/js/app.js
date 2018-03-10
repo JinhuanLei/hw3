@@ -7,7 +7,7 @@ $(document).ready(function () {
 
     $.ajax({
         type: "GET",
-        url :  "/wordgame/api/v2/meta/fonts",
+        url :  "/wordgame/api/v1/meta/fonts",
         success: function (data) {
             $.each(data,function(index,value){
                 $("#font").append("<option value='"+value.category+"'>"+value.category+"</option>");
@@ -32,7 +32,7 @@ div2.style.display='none';
 function initialDefaults() {
     $.ajax({
         type: "GET",
-        url :  "/wordgame/api/v2/meta",
+        url :  "/wordgame/api/v1/meta",
         success: function (data) {
             //alert(data[0].defaults.font.category);
             //alert(JSON.stringify(data[0].defaults));
@@ -90,7 +90,7 @@ function newGame() {
     var forecolor=$('#forecolor').val();
 
     $.ajax({
-        url: '/wordgame/api/v2/'+userid,
+        url: '/wordgame/api/v1/'+userid,
         data:{"font":font,"level": diff,"wordcolor":wordcolor,"guesscolor":guesscolor,"forecolor":forecolor},
         method: "POST",
         success:function (data) {
@@ -144,7 +144,7 @@ function makeGuess() {
     $('#letter').val("");
     $.ajax({
         type: "POST",
-        url: '/wordgame/api/v2/' + userid+'/'+currentGameObj._id,
+        url: '/wordgame/api/v1/' + userid+'/'+currentGameObj._id,
         data:{"userid":userid,"gid":currentGameObj._id,"guess":guessLetter},
         success: function (data) {
 
@@ -291,6 +291,9 @@ function retrieveGame(thisObj,gid) {
 
 function login()
 {
+    $('#invalid2').css("display","none");
+    $('#invalid1').css("display","none");
+
     var email=$('#login_username').val();
     var password=$('#login_password').val();
     $.ajax({
@@ -298,6 +301,8 @@ function login()
         url: '/wordgame/api/v2/login',
         data:{"email":email,"password":password},
         success: function (data) {
+            $('#invalid2').css("display","none");
+            $('#invalid1').css("display","none");
             div1.style.display="block";
             logindiv.style.display="none";
             userid=data._id;
@@ -306,8 +311,14 @@ function login()
             console.log("id"+userid);
             console.log(data);
         },
-        error: function () {
-       $('#invalid1').css("display","block");
+        error: function (data) {
+           //console.log(data);
+            if(data.responseText=="invalid2"){
+                $('#invalid2').css("display","block");
+            }else{
+                $('#invalid1').css("display","block");
+            }
+
         }
     })
 }

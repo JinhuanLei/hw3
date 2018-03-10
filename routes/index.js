@@ -92,7 +92,7 @@ router.get('/wordgame', function(req, res, next) {
 
 
 
-router.get('/wordgame/api/v2/meta/fonts', function(req, res, next) {
+router.get('/wordgame/api/v1/meta/fonts', function(req, res, next) {
     var result = [];
     var fontDb =font.getfontDb();
     //users.save();
@@ -107,7 +107,7 @@ router.get('/wordgame/api/v2/meta/fonts', function(req, res, next) {
     res.send(result);
 });
 
-router.get('/wordgame/api/v2/meta', function(req, res, next) {  //twice
+router.get('/wordgame/api/v1/meta', function(req, res, next) {  //twice
     createWordDb();
     //users.save();
     //var resultmeta = [];
@@ -140,7 +140,7 @@ if(!req.session.user){
 
 });
 
-router.post('/wordgame/api/v2/:userid', function(req, res, next) {
+router.post('/wordgame/api/v1/:userid', function(req, res, next) {
     var colorObj=colors.createColorObj(req.body.guesscolor,req.body.forecolor,req.body.wordcolor)
     var fontObj=font.searchFont(req.body.font);
     var uid=req.params.userid;
@@ -185,7 +185,7 @@ router.post('/wordgame/api/v2/:userid', function(req, res, next) {
 
 
 
-router.post('/wordgame/api/v2/:userid/:gid', function(req, res, next) {
+router.post('/wordgame/api/v1/:userid/:gid', function(req, res, next) {
     var guess=req.body.guess;
     var uid=req.body.userid;
     var gid=req.body.gid;
