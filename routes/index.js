@@ -185,7 +185,7 @@ router.post('/wordgame/api/v2/:userid', function(req, res, next) {
 
 
 
-router.post('/wordgame/api/v1/:userid/:gid', function(req, res, next) {
+router.post('/wordgame/api/v2/:userid/:gid', function(req, res, next) {
     var guess=req.body.guess;
     var uid=req.body.userid;
     var gid=req.body.gid;

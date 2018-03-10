@@ -117,7 +117,7 @@ function closeGame() {
 
     $.ajax({
         type: "GET",
-        url: '/wordgame/api/v1/' + userid,
+        url: '/wordgame/api/v1/' + userid,   //here
         success: function (data) {
            //console.log(data);
             if(data=="expired")
@@ -144,7 +144,7 @@ function makeGuess() {
     $('#letter').val("");
     $.ajax({
         type: "POST",
-        url: '/wordgame/api/v1/' + userid+'/'+currentGameObj._id,
+        url: '/wordgame/api/v2/' + userid+'/'+currentGameObj._id,
         data:{"userid":userid,"gid":currentGameObj._id,"guess":guessLetter},
         success: function (data) {
 
