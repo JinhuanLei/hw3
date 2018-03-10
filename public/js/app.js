@@ -32,7 +32,7 @@ div2.style.display='none';
 function initialDefaults() {
     $.ajax({
         type: "GET",
-        url :  "/wordgame/api/v1/meta",
+        url :  "/wordgame/api/v2/meta",
         success: function (data) {
             //alert(data[0].defaults.font.category);
             //alert(JSON.stringify(data[0].defaults));

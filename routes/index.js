@@ -107,7 +107,7 @@ router.get('/wordgame/api/v2/meta/fonts', function(req, res, next) {
     res.send(result);
 });
 
-router.get('/wordgame/api/v1/meta', function(req, res, next) {  //twice
+router.get('/wordgame/api/v2/meta', function(req, res, next) {  //twice
     createWordDb();
     //users.save();
     //var resultmeta = [];
