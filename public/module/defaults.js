@@ -10,7 +10,7 @@ function defaults(font,level,colors) {
     this.colors=colors;
 }
 
-defaultsobj=new defaults(font.getDefaultFont(),level.getDefaultLevel(),colors.getdefaultcolor());
+var defaultsobj=new defaults(font.getDefaultFont(),level.getDefaultLevel(),colors.getdefaultcolor());
 
 function getDefaultobj() {
     return defaultsobj;

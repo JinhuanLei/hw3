@@ -27,7 +27,7 @@ app.use(session({
     secret: 'A SECRET KEY. SHOULD BE UNIQE TO THE APP. DONT EVER SHOW IT TO ANYONE', //secret的值建议使用随机字符串
     resave : true,
     saveUninitialized : true,
-    cookie: {maxAge: 60 * 1000 * 10}
+    cookie: {maxAge: 1000*10*60}
 
 
 }));

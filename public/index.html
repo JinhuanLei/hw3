@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css?family=Anton|Bellefair|Cabin|Indie+Flower|Kavivanar|Lato|Lobster|Montserrat|Mukta+Mahee|Open+Sans|Oswald|Pacifico|Roboto|Roboto+Condensed|Slabo+27px|Ubuntu" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
 </head>
-<body class="fullpage">
+<body class="fullpage" >
 <div id="login" style="position: relative; top:200px; ">
     <!--<form id="login-form"  target="nm_iframe" class="form-signin">-->
         <!--<h3>Grammer Guru</h3>-->
@@ -42,7 +42,10 @@
 
             <br>
             <button class="btn btn-lg btn-primary btn-block" type="submit" onclick="login()">Login</button>
+            <label style="color: #873920;display: none" id="invalid1" >Invalid username/password!</label>
+            <label style="color: #873920; display: none" id="invalid2">Invalid format of email!</label>
         </form>
+
         <iframe id="id_iframe1" name="nm_iframe1" style="display:none;"></iframe>
     </div>
 </div>

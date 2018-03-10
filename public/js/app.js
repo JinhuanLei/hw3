@@ -15,24 +15,7 @@ $(document).ready(function () {
         }
     });
 
-    $.ajax({
-        type: "GET",
-        url :  "/wordgame/api/v1/meta",
-        success: function (data) {
-         //alert(data[0].defaults.font.category);
-            //alert(JSON.stringify(data[0].defaults));
-            console.log(data[0].defaults);
-            $("#font").val(""+data[0].defaults.font.category+"").selected="selected";
-            $.each(data[0].levels,function(index,value){
-                $("#diff").append("<option value='"+value.name+"'>"+value.name+"</option>");
-            });
-            $("#diff").val(""+data[0].defaults.level.name+"").selected="selected";
-            $("#wordcolor").val(""+data[0].defaults.colors.wordBackground+"");
-            $("#guesscolor").val(""+data[0].defaults.colors.guessBackground+"");
-            $("#forecolor").val(""+data[0].defaults.colors.textBackground+"");
 
-        }
-    });
     // closeGame();
 })
 var div1=document.getElementById("page1");
@@ -46,6 +29,30 @@ div2.style.display='none';
 // var Defaults=new Object();
 // var Game=new Object();
 
+function initialDefaults() {
+    $.ajax({
+        type: "GET",
+        url :  "/wordgame/api/v1/meta",
+        success: function (data) {
+            //alert(data[0].defaults.font.category);
+            //alert(JSON.stringify(data[0].defaults));
+            //console.log(data);
+            //alert("change style")
+            $("#font").val(""+data.defaults.font.category+"").selected="selected";
+            $("#diff").empty();
+            $.each(data.levels,function(index,value){
+                $("#diff").append("<option value='"+value.name+"'>"+value.name+"</option>");
+            });
+            $("#diff").val(""+data.defaults.level.name+"").selected="selected";
+            $("#wordcolor").val(""+data.defaults.colors.wordBackground+"");
+            $("#guesscolor").val(""+data.defaults.colors.guessBackground+"");
+            $("#forecolor").val(""+data.defaults.colors.textBackground+"");
+
+        }
+    });
+}
+
+
 function validateUser() {
     $.ajax({
         type: "GET",
@@ -56,15 +63,20 @@ function validateUser() {
 }
 
 function setPage() {
+    // $('body').css("background","url('../images/back1.jpg') repeat-x fixed center center;");
+
+    $('body').css("background-image","url('../images/back1.jpg')");
+    $('body').css("background-size","cover");
     div1.style.display="none";
     logindiv.style.display="block";
 }
 
 function setUser(user) {
     userid=user._id;
+    closeGame();
     div1.style.display="block";
     logindiv.style.display="none";
-    closeGame();
+
 
 
 }
@@ -76,30 +88,50 @@ function newGame() {
     var wordcolor=$('#wordcolor').val();
     var guesscolor=$('#guesscolor').val();
     var forecolor=$('#forecolor').val();
+
     $.ajax({
         url: '/wordgame/api/v1/'+userid,
         data:{"font":font,"level": diff,"wordcolor":wordcolor,"guesscolor":guesscolor,"forecolor":forecolor},
         method: "POST",
         success:function (data) {
            // console.log(data);
-            currentGameObj=data;
-            console.log(data);
-            showGame(data);
+            if(data=="expired")
+            {
+                validateUser();
+
+            }else {
+                currentGameObj=data;
+                //console.log(data);
+                showGame(data);
+            }
+
         }
     });
 }
 
 
 function closeGame() {
+    initialDefaults();
+    //$('body').css('background','');
+    $('body').css('background','none')
+
     $.ajax({
         type: "GET",
         url: '/wordgame/api/v1/' + userid,
         success: function (data) {
            //console.log(data);
-            showTable(data);
-            div1.style.display = 'block';
-            div2.style.display = 'none';
-            },
+            if(data=="expired")
+            {
+                div2.style.display = 'none';
+                validateUser();
+
+            }else {
+                showTable(data);
+                div1.style.display = 'block';
+                div2.style.display = 'none';
+            }
+
+            }
         // error: alert("error")
 
         })
@@ -133,7 +165,7 @@ function showTable(data) {
     for (var x = 0; x < count; x++) {
         var row = document.createElement("tr");
        // row.setAttribute("onclick","showGame("+data[x]+")");
-        var gid=data[x].id;
+        var gid=data[x]._id;
         row.id=gid;
           row.onclick= function(){
               retrieveGame(this,gid);
@@ -185,7 +217,7 @@ function showTable(data) {
 function showGame(data) {
     div1.style.display='none';
     currentGameObj=data;
-    console.log(data);
+   // console.log(data);
     var guessform=document.getElementById("guessform");
     $('#wordview').html("");
     $('#guesses').html("");
@@ -244,20 +276,17 @@ function showGame(data) {
 
 
 function retrieveGame(thisObj,gid) {
- ngid=thisObj.id;
+ var ngid=thisObj.id;
     $.ajax({
         type: "GET",
-        url: '/wordgame/api/v1/' + sid+'/'+ngid,
+        url: '/wordgame/api/v1/' + userid+'/'+gid,
         success: function (data) {
           showGame(data);
         }
     })
 }
 
-function changPage() {
-    div1.style.display="block";
-    logindiv.style.display="none";
-}
+
 
 
 function login()
@@ -272,21 +301,27 @@ function login()
             div1.style.display="block";
             logindiv.style.display="none";
             userid=data._id;
-            closeGame();
+            //closeGame();   //show main interface
+            validateUser();
             console.log("id"+userid);
             console.log(data);
+        },
+        error: function () {
+       $('#invalid1').css("display","block");
         }
     })
 }
 
 
 function logout() {
+
     $.ajax({
         type: "POST",
         url: '/wordgame/api/v2/logout',
         success: function (data) {
-            div1.style.display="none";
-            logindiv.style.display="block";
+            // div1.style.display="none";
+            // logindiv.style.display="block";
+            validateUser();
         }
     })
 }

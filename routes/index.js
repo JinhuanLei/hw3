@@ -6,7 +6,8 @@ var level = require('../public/module/level');
 var colors = require('../public/module/colors');
 var metadata = require('../public/module/Metadata');
 var readline = require("readline");
-//var users = require('./users.js');
+var ObjectId = require('mongodb').ObjectID;
+var users = require('./users.js');
 var gamesDb=[];
 var wordDb=[];
 var db=require("./db")
@@ -94,7 +95,8 @@ router.get('/wordgame', function(req, res, next) {
 router.get('/wordgame/api/v1/meta/fonts', function(req, res, next) {
     var result = [];
     var fontDb =font.getfontDb();
-    // for(var x in fontDb){
+    //users.save();
+    // for(var x in fontDb){    //insert Font
     //     db.collection("Font").insertOne(fontDb[x],function (err,font) {
     //
     //     })
@@ -105,18 +107,30 @@ router.get('/wordgame/api/v1/meta/fonts', function(req, res, next) {
     res.send(result);
 });
 
-router.get('/wordgame/api/v1/meta', function(req, res, next) {
+router.get('/wordgame/api/v1/meta', function(req, res, next) {  //twice
     createWordDb();
-   // users.save();
-    var resultmeta = [];
-    var metadataObj =metadata.getMetadataobj();
-    // result.push(metadataObj);
-    resultmeta.push(metadataObj);
-    res.send(resultmeta);
+    //users.save();
+    //var resultmeta = [];
+    var metadataObj=metadata.getMetadataobj()
+    //console.log(metadataObj);
+    var user=req.session.user;
+    if(user){
+metadataObj.defaults=user.defaults;
+            res.send(metadataObj);
+
+    }
+   else{
+        res.redirect("/wordgame");  //??
+    }
+
 });
 
 router.get('/wordgame/api/v1/:userid', function(req, res, next) {
 var uid=req.params.userid;
+if(!req.session.user){
+   res.send("expired");
+   return;
+}
     db.collection('Game').find({userId:uid}).toArray(function(err,users){
         res.send(users);
     });
@@ -130,9 +144,35 @@ router.post('/wordgame/api/v1/:userid', function(req, res, next) {
     var colorObj=colors.createColorObj(req.body.guesscolor,req.body.forecolor,req.body.wordcolor)
     var fontObj=font.searchFont(req.body.font);
     var uid=req.params.userid;
-    console.log(req.body.font);
     var levelObj=level.getLevelObj(req.body.level)
     var result=createGame(uid,colorObj,fontObj,levelObj);
+      var defaultsObj={};
+      defaultsObj.font=fontObj;
+      defaultsObj.colors=colorObj;
+      defaultsObj.level=levelObj;
+      var user=req.session.user;
+      if(user){
+          user.defaults=defaultsObj;
+          req.session.user=user;
+         // console.log(user);
+          var dbuser={};
+          db.collection("User").findOne({_id:ObjectId(uid)},function (err,data) {
+             dbuser=data;
+              dbuser.defaults=defaultsObj;
+              delete  dbuser._id;
+              console.log(dbuser);
+              db.collection("User").update({_id:ObjectId(uid)},dbuser,function (err,data) {
+                  if(err){
+                      console.log("err"+err);
+                  }else{
+                      console.log("success")
+                  }
+              });
+          });
+      }else {
+          res.send("expired");
+          return;
+      }
     db.collection("Game").insertOne(result,function (err) {
         if(err){
             res.send(err);
@@ -185,12 +225,17 @@ router.post('/wordgame/api/v1/:userid/:gid', function(req, res, next) {
             console.log("victory:"+view.indexOf("_"))
             if(view.indexOf("_")==-1)
             {
+
                 game.status="victory";
+                var timestamp = Date.parse(new Date());
+                game.timeToComplete=timestamp;
             }
             game.remaining-=1;
             if(game.remaining==0&&(game.status!="victory"))
             {
                 game.status="loss";
+                var timestamp = Date.parse(new Date());
+                game.timeToComplete=timestamp;
             }
             game.guesses += guess;
 
@@ -247,13 +292,25 @@ router.post('/wordgame/api/v1/:userid/:gid', function(req, res, next) {
 
 
 
-router.get('/wordgame/api/v1/:sid/:gid', function(req, res, next) {
-    var gamelist = gamesDb[req.params.sid];
-    for (var a = 0; a < gamelist.length; a++) {
-        if (gamelist[a].id == (req.params.gid)) {
-            res.send(gamelist[a]);
+router.get('/wordgame/api/v1/:userid/:gid', function(req, res, next) {
+    var uid=req.params.userid;
+    var gid=req.params.gid;
+    // var gamelist = gamesDb[req.params.sid];
+    // for (var a = 0; a < gamelist.length; a++) {
+    //     if (gamelist[a].id == (req.params.gid)) {
+    //         res.send(gamelist[a]);
+    //     }
+    // }
+
+    db.collection('Game').findOne({_id:gid},function (err,game) {
+        if(game.userId==uid){
+            res.send(game);
+        }else{
+            res.send(err);
         }
-    }
+
+    })
+
 });
 
 

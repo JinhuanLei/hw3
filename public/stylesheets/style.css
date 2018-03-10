@@ -15,9 +15,13 @@ a {
 
 
 
-body {
-  background: #eee !important;
-}
+/*body {*/
+  /*!*background: #eee !important;*!*/
+  /*background-size: cover; !* rescales the image to cover the window *!*/
+  /*!* shown during image load *!*/
+  /*background: #464646 url("../images/back1.jpg") repeat-x fixed center center;*/
+
+/*}*/
 
 .wrapper {
   margin-top: 80px;
