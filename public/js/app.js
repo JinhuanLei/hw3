@@ -80,7 +80,15 @@ function setUser(user) {
 
 
 }
+function updateDefault() {
+    $.ajax({
+        type: "PUT",
+        url: '/wordgame/api/v2/' + userid+'/defaults',
+        success: function (data) {
 
+        }
+    })
+}
 function newGame() {
 
     var font=$('#font').val();
@@ -95,6 +103,7 @@ function newGame() {
         method: "POST",
         success:function (data) {
            // console.log(data);
+            updateDefault();
             if(data=="expired")
             {
                 validateUser();

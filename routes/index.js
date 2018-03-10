@@ -140,6 +140,31 @@ if(!req.session.user){
 
 });
 
+router.put('/wordgame/api/v2/:userid/defaults',function (req,res,next) {
+    var uid=req.params.userid;
+    var user=req.session.user;
+    if(user){
+        var dbuser={};
+        db.collection("User").findOne({_id:ObjectId(uid)},function (err,data) {
+            dbuser=data;
+            dbuser.defaults=user.defaults;
+            delete  dbuser._id;
+            console.log(dbuser);
+            db.collection("User").update({_id:ObjectId(uid)},dbuser,function (err,data) {
+                if(err){
+                    console.log("err"+err);
+                }else{
+                    console.log("success")
+                }
+            });
+        });
+    }
+    else {
+        res.send("error");
+    }
+})
+
+
 router.post('/wordgame/api/v1/:userid', function(req, res, next) {
     var colorObj=colors.createColorObj(req.body.guesscolor,req.body.forecolor,req.body.wordcolor)
     var fontObj=font.searchFont(req.body.font);
@@ -155,20 +180,20 @@ router.post('/wordgame/api/v1/:userid', function(req, res, next) {
           user.defaults=defaultsObj;
           req.session.user=user;
          // console.log(user);
-          var dbuser={};
-          db.collection("User").findOne({_id:ObjectId(uid)},function (err,data) {
-             dbuser=data;
-              dbuser.defaults=defaultsObj;
-              delete  dbuser._id;
-              console.log(dbuser);
-              db.collection("User").update({_id:ObjectId(uid)},dbuser,function (err,data) {
-                  if(err){
-                      console.log("err"+err);
-                  }else{
-                      console.log("success")
-                  }
-              });
-          });
+         //  var dbuser={};
+         //  db.collection("User").findOne({_id:ObjectId(uid)},function (err,data) {
+         //     dbuser=data;
+         //      dbuser.defaults=defaultsObj;
+         //      delete  dbuser._id;
+         //      console.log(dbuser);
+         //      db.collection("User").update({_id:ObjectId(uid)},dbuser,function (err,data) {
+         //          if(err){
+         //              console.log("err"+err);
+         //          }else{
+         //              console.log("success")
+         //          }
+         //      });
+         //  });
       }else {
           res.send("expired");
           return;
