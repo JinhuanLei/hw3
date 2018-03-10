@@ -90,7 +90,7 @@ function newGame() {
     var forecolor=$('#forecolor').val();
 
     $.ajax({
-        url: '/wordgame/api/v1/'+userid,
+        url: '/wordgame/api/v2/'+userid,
         data:{"font":font,"level": diff,"wordcolor":wordcolor,"guesscolor":guesscolor,"forecolor":forecolor},
         method: "POST",
         success:function (data) {

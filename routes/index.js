@@ -140,7 +140,7 @@ if(!req.session.user){
 
 });
 
-router.post('/wordgame/api/v1/:userid', function(req, res, next) {
+router.post('/wordgame/api/v2/:userid', function(req, res, next) {
     var colorObj=colors.createColorObj(req.body.guesscolor,req.body.forecolor,req.body.wordcolor)
     var fontObj=font.searchFont(req.body.font);
     var uid=req.params.userid;
