@@ -92,7 +92,7 @@ router.get('/wordgame', function(req, res, next) {
 
 
 
-router.get('/wordgame/api/v1/meta/fonts', function(req, res, next) {
+router.get('/wordgame/api/v3/meta/fonts', function(req, res, next) {
     var result = [];
     var fontDb =font.getfontDb();
     //users.save();
@@ -107,7 +107,7 @@ router.get('/wordgame/api/v1/meta/fonts', function(req, res, next) {
     res.send(result);
 });
 
-router.get('/wordgame/api/v1/meta', function(req, res, next) {  //twice
+router.get('/wordgame/api/v3/meta', function(req, res, next) {  //twice
     createWordDb();
     //users.save();
     //var resultmeta = [];
@@ -115,7 +115,7 @@ router.get('/wordgame/api/v1/meta', function(req, res, next) {  //twice
     //console.log(metadataObj);
     var user=req.session.user;
     if(user){
-metadataObj.defaults=user.defaults;
+           metadataObj.defaults=user.defaults;
             res.send(metadataObj);
 
     }
@@ -125,7 +125,7 @@ metadataObj.defaults=user.defaults;
 
 });
 
-router.get('/wordgame/api/v1/:userid', function(req, res, next) {
+router.get('/wordgame/api/v3/:userid', function(req, res, next) {
 var uid=req.params.userid;
 if(!req.session.user){
    res.send("expired");
@@ -140,7 +140,7 @@ if(!req.session.user){
 
 });
 
-router.put('/wordgame/api/v2/:userid/defaults',function (req,res,next) {
+router.put('/wordgame/api/v3/:userid/defaults',function (req,res,next) {
     var uid=req.params.userid;
     var user=req.session.user;
     if(user){
@@ -165,7 +165,7 @@ router.put('/wordgame/api/v2/:userid/defaults',function (req,res,next) {
 })
 
 
-router.post('/wordgame/api/v1/:userid', function(req, res, next) {
+router.post('/wordgame/api/v3/:userid', function(req, res, next) {
     var colorObj=colors.createColorObj(req.body.guesscolor,req.body.forecolor,req.body.wordcolor)
     var fontObj=font.searchFont(req.body.font);
     var uid=req.params.userid;
@@ -210,7 +210,7 @@ router.post('/wordgame/api/v1/:userid', function(req, res, next) {
 
 
 
-router.post('/wordgame/api/v1/:userid/:gid', function(req, res, next) {
+router.post('/wordgame/api/v3/:userid/:gid', function(req, res, next) {
     var guess=req.body.guess;
     var uid=req.body.userid;
     var gid=req.body.gid;
@@ -300,7 +300,7 @@ router.post('/wordgame/api/v1/:userid/:gid', function(req, res, next) {
 
 
 
-router.get('/wordgame/api/v1/:userid/:gid', function(req, res, next) {
+router.get('/wordgame/api/v3/:userid/:gid', function(req, res, next) {
     var uid=req.params.userid;
     var gid=req.params.gid;
     // var gamelist = gamesDb[req.params.sid];

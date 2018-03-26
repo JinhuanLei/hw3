@@ -4,7 +4,7 @@ var router = express.Router();
 var db=require("./db")
 var uuid = require('uuid');
 
-router.get('/wordgame/api/v2/uid', function(req, res, next) {
+router.get('/wordgame/api/v/uid', function(req, res, next) {
 
     var user = req.session.user;
     console.log(req);
@@ -22,7 +22,7 @@ function validateEmail(email) {
 
 
 var csrftoken;
-router.post('/wordgame/api/v2/login',function (req,res,next) {
+router.post('/wordgame/api/v4/login',function (req,res,next) {
              var email=req.body.email;
              var password=req.body.password;
              if(!validateEmail(email))
@@ -50,7 +50,7 @@ router.post('/wordgame/api/v2/login',function (req,res,next) {
     });
 })
 
-router.post('/wordgame/api/v2/logout',function (req,res,next) {
+router.post('/wordgame/api/v4/logout',function (req,res,next) {
    req.session.destroy();
    res.send("success");
 

@@ -7,7 +7,7 @@ $(document).ready(function () {
 
     $.ajax({
         type: "GET",
-        url :  "/wordgame/api/v1/meta/fonts",
+        url :  "/wordgame/api/v3/meta/fonts",
         success: function (data) {
             $.each(data,function(index,value){
                 $("#font").append("<option value='"+value.category+"'>"+value.category+"</option>");
@@ -32,7 +32,7 @@ div2.style.display='none';
 function initialDefaults() {
     $.ajax({
         type: "GET",
-        url :  "/wordgame/api/v1/meta",
+        url :  "/wordgame/api/v3/meta",
         success: function (data) {
             //alert(data[0].defaults.font.category);
             //alert(JSON.stringify(data[0].defaults));
@@ -56,7 +56,7 @@ function initialDefaults() {
 function validateUser() {
     $.ajax({
         type: "GET",
-        url :  "/wordgame/api/v2/uid",
+        url :  "/wordgame/api/v/uid",
         success : setUser,
         error : setPage()
     });
@@ -83,7 +83,7 @@ function setUser(user) {
 function updateDefault() {
     $.ajax({
         type: "PUT",
-        url: '/wordgame/api/v2/' + userid+'/defaults',
+        url: '/wordgame/api/v3/' + userid+'/defaults',
         success: function (data) {
 
         }
@@ -98,7 +98,7 @@ function newGame() {
     var forecolor=$('#forecolor').val();
 
     $.ajax({
-        url: '/wordgame/api/v1/'+userid,
+        url: '/wordgame/api/v3/'+userid,
         data:{"font":font,"level": diff,"wordcolor":wordcolor,"guesscolor":guesscolor,"forecolor":forecolor},
         method: "POST",
         success:function (data) {
@@ -126,7 +126,7 @@ function closeGame() {
 
     $.ajax({
         type: "GET",
-        url: '/wordgame/api/v1/' + userid,   //here
+        url: '/wordgame/api/v3/' + userid,   //here
         success: function (data) {
            //console.log(data);
             if(data=="expired")
@@ -153,7 +153,7 @@ function makeGuess() {
     $('#letter').val("");
     $.ajax({
         type: "POST",
-        url: '/wordgame/api/v1/' + userid+'/'+currentGameObj._id,
+        url: '/wordgame/api/v3/' + userid+'/'+currentGameObj._id,
         data:{"userid":userid,"gid":currentGameObj._id,"guess":guessLetter},
         success: function (data) {
 
@@ -285,10 +285,12 @@ function showGame(data) {
 
 
 function retrieveGame(thisObj,gid) {
+    console.log("gid:"+gid);
+    console.log("ngid:"+thisObj.id);
  var ngid=thisObj.id;
     $.ajax({
         type: "GET",
-        url: '/wordgame/api/v1/' + userid+'/'+gid,
+        url: '/wordgame/api/v3/' + userid+'/'+ngid,
         success: function (data) {
           showGame(data);
         }
@@ -307,7 +309,7 @@ function login()
     var password=$('#login_password').val();
     $.ajax({
         type: "POST",
-        url: '/wordgame/api/v2/login',
+        url: '/wordgame/api/v4/login',
         data:{"email":email,"password":password},
         success: function (data) {
             $('#invalid2').css("display","none");
@@ -337,11 +339,18 @@ function logout() {
 
     $.ajax({
         type: "POST",
-        url: '/wordgame/api/v2/logout',
-        success: function (data) {
+        url: '/wordgame/api/v4/logout',
+        success: function () {
             // div1.style.display="none";
             // logindiv.style.display="block";
             validateUser();
+        },
+        error:function (){
+            console.log("err");
         }
     })
+}
+
+function saveDefaults() {
+    
 }
