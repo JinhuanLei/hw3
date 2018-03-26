@@ -321,6 +321,7 @@ function login()
             $('#invalid2').css("display","none");
             $('#invalid1').css("display","none");
             div1.style.display="block";
+            $('#userEmail').text(data.email);
             logindiv.style.display="none";
             userid=data._id;
             //closeGame();   //show main interface
