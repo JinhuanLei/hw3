@@ -81,8 +81,14 @@ function setUser(user) {
 
 }
 function updateDefault() {
+    var font=$('#font').val();
+    var diff=$('#diff').val();
+    var wordcolor=$('#wordcolor').val();
+    var guesscolor=$('#guesscolor').val();
+    var forecolor=$('#forecolor').val();
     $.ajax({
         type: "PUT",
+        data:{"font":font,"level": diff,"wordcolor":wordcolor,"guesscolor":guesscolor,"forecolor":forecolor},
         url: '/wordgame/api/v3/' + userid+'/defaults',
         success: function (data) {
 
@@ -103,7 +109,7 @@ function newGame() {
         method: "POST",
         success:function (data) {
            // console.log(data);
-            updateDefault();
+           //  updateDefault();
             if(data=="expired")
             {
                 validateUser();
@@ -309,7 +315,7 @@ function login()
     var password=$('#login_password').val();
     $.ajax({
         type: "POST",
-        url: '/wordgame/api/v4/login',
+        url: '/wordgame/api/v/login',
         data:{"email":email,"password":password},
         success: function (data) {
             $('#invalid2').css("display","none");
@@ -339,7 +345,7 @@ function logout() {
 
     $.ajax({
         type: "POST",
-        url: '/wordgame/api/v4/logout',
+        url: '/wordgame/api/v/logout',
         success: function () {
             // div1.style.display="none";
             // logindiv.style.display="block";
@@ -352,5 +358,5 @@ function logout() {
 }
 
 function saveDefaults() {
-    
+    updateDefault();
 }

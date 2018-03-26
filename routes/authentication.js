@@ -22,7 +22,7 @@ function validateEmail(email) {
 
 
 var csrftoken;
-router.post('/wordgame/api/v4/login',function (req,res,next) {
+router.post('/wordgame/api/v/login',function (req,res,next) {
              var email=req.body.email;
              var password=req.body.password;
              if(!validateEmail(email))
@@ -50,7 +50,7 @@ router.post('/wordgame/api/v4/login',function (req,res,next) {
     });
 })
 
-router.post('/wordgame/api/v4/logout',function (req,res,next) {
+router.post('/wordgame/api/v/logout',function (req,res,next) {
    req.session.destroy();
    res.send("success");
 
