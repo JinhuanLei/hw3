@@ -20,6 +20,7 @@ $(document).ready(function () {
 })
 var div1=document.getElementById("page1");
 var div2=document.getElementById("page2");
+var admindiv=document.getElementById("page3");
 var logindiv=document.getElementById("login");
 div2.style.display='none';
 // var Font=new Object();
@@ -68,13 +69,24 @@ function setPage() {
     $('body').css("background-image","url('../images/back1.jpg')");
     $('body').css("background-size","cover");
     div1.style.display="none";
+    admindiv.style.display="none";
     logindiv.style.display="block";
 }
 
 function setUser(user) {
     userid=user._id;
-    closeGame();
-    div1.style.display="block";
+    // console.log("setUser:"+user.role+"user.role==\"USER\":"+user.role=="USER");
+    $('body').css('background','none')
+    if(user.role=="USER"){
+        closeGame();
+
+        div1.style.display="block";
+        admindiv.style.display="none";
+    }
+   else {
+        admindiv.style.display="block";
+        div1.style.display="none";
+    }
     logindiv.style.display="none";
 
 
@@ -127,8 +139,8 @@ function newGame() {
 
 function closeGame() {
     initialDefaults();
-    //$('body').css('background','');
-    $('body').css('background','none')
+
+    // $('body').css('background','none')
 
     $.ajax({
         type: "GET",
@@ -320,9 +332,17 @@ function login()
         success: function (data) {
             $('#invalid2').css("display","none");
             $('#invalid1').css("display","none");
-            div1.style.display="block";
-            $('#userEmail').text(data.email);
             logindiv.style.display="none";
+            console.log(data.role);
+            if(data.role=="USER"){
+                div1.style.display="block";
+                admindiv.style.display="none";
+                $('#userEmail').text(data.email);
+            }else{
+                div1.style.display="none";
+                admindiv.style.display="block";
+                $('#adminEmail').text(data.email);
+            }
             userid=data._id;
             //closeGame();   //show main interface
             validateUser();

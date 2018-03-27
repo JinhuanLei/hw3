@@ -13,7 +13,7 @@ var wordDb=[];
 var db=require("./db")
 
 
-function Game( uid,colors, font, guesses,level,remaining,status,target,timestamp,timeToComplete,view ) {
+function Game(uid,colors, font, guesses,level,remaining,status,target,timestamp,timeToComplete,view ) {
     this._id = uuid();
     this.userId=uid;
     this.colors = colors;
