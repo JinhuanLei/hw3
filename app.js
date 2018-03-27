@@ -9,6 +9,7 @@ var bodyParser = require('body-parser');
 var index = require('./routes/index');
 var users = require('./routes/users');
 var authentication=require('./routes/authentication')
+var admins=require('./routes/admins')
 //var game = require('./public/module/game');
 
 
@@ -35,7 +36,7 @@ app.use(session({
 app.use('/', index);
 //app.use('/',game);
 app.use('/', authentication);
-
+app.use('/', admins);
 
 
 

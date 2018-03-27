@@ -22,6 +22,7 @@ var div1=document.getElementById("page1");
 var div2=document.getElementById("page2");
 var admindiv=document.getElementById("page3");
 var logindiv=document.getElementById("login");
+var userAttrDiv=document.getElementById("page4");
 div2.style.display='none';
 // var Font=new Object();
 // var Level=new Object();
@@ -70,6 +71,7 @@ function setPage() {
     $('body').css("background-size","cover");
     div1.style.display="none";
     admindiv.style.display="none";
+    userAttrDiv.style.display="none";
     logindiv.style.display="block";
 }
 
@@ -78,12 +80,13 @@ function setUser(user) {
     // console.log("setUser:"+user.role+"user.role==\"USER\":"+user.role=="USER");
     $('body').css('background','none')
     if(user.role=="USER"){
+        console.log("I am user"+user.role);
         closeGame();
-
         div1.style.display="block";
         admindiv.style.display="none";
     }
    else {
+        showAdminPage();
         admindiv.style.display="block";
         div1.style.display="none";
     }
@@ -187,6 +190,7 @@ function makeGuess() {
 
 
 function showTable(data) {
+    // alert("I am here");
     $('#hi').html("");
     var count = Object.keys(data).length;
     for (var x = 0; x < count; x++) {
@@ -381,4 +385,55 @@ function logout() {
 
 function saveDefaults() {
     updateDefault();
+}
+
+function  showAdminPage() {         //endpoint@
+
+    $.ajax({
+        type:"GET",
+        url:'/wordgame/api/v/admins/users',
+        success:function (data) {
+           showUserTable(data);
+        }
+
+    })
+}
+
+function showUserTable(data) {
+    $('#userTB').html("");
+    var count = Object.keys(data).length;
+    for (var x = 0; x < count; x++) {
+        var row = document.createElement("tr");
+        row.style="cursor: pointer;"
+        // row.setAttribute("onclick","showGame("+data[x]+")");
+        var uid=data[x]._id;
+        row.id=uid;
+        row.onclick= function(){
+            viewUser(this);
+        };
+        var td1 = document.createElement("td");
+        td1.height='40px';
+        td1.appendChild(document.createTextNode(data[x].name.first));
+        row.appendChild(td1);
+        var td2 = document.createElement("td");
+         td2.appendChild(document.createTextNode(data[x].name.last));
+        row.appendChild(td2);
+        var td3 = document.createElement("td");
+        td3.appendChild(document.createTextNode(data[x].email));
+        row.appendChild(td3);
+        var td4 = document.createElement("td");
+        td4.appendChild(document.createTextNode(data[x].rule));
+        if(data[x].status!="unfinished")  row.appendChild(td4);
+        else row.appendChild(document.createElement("td"));
+        var td5 = document.createElement("td");
+        td5.appendChild(document.createTextNode("TRUE"));
+        row.appendChild(td5);
+        document.getElementById("userTB").append(row);
+    }
+
+}
+
+function viewUser(thisObj) {
+    admindiv.style.display="none";
+    userAttrDiv.style.display="block";
 }
