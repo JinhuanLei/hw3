@@ -115,8 +115,12 @@ router.get('/wordgame/api/v3/meta', function(req, res, next) {  //twice
     //console.log(metadataObj);
     var user=req.session.user;
     if(user){
-           metadataObj.defaults=user.defaults;
+        if(user.defaults){
+            metadataObj.defaults=user.defaults;
             res.send(metadataObj);
+        }else{
+            res.send(metadataObj);
+        }
 
     }
    else{
