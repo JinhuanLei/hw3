@@ -58,7 +58,7 @@ function initialDefaults() {
 function validateUser() {
     $.ajax({
         type: "GET",
-        url :  "/wordgame/api/v/uid",
+        url :  "/wordgame/api/uid/v3",
         success : setUser,
         error : setPage()
     });
@@ -332,7 +332,7 @@ function login()
     var password=$('#login_password').val();
     $.ajax({
         type: "POST",
-        url: '/wordgame/api/v/login',
+        url: '/wordgame/api/login/v3',
         data:{"email":email,"password":password},
         success: function (data) {
             $('#invalid2').css("display","none");
@@ -371,7 +371,7 @@ function logout() {
 
     $.ajax({
         type: "POST",
-        url: '/wordgame/api/v/logout',
+        url: '/wordgame/api/logout/v3',
         success: function () {
             // div1.style.display="none";
             // logindiv.style.display="block";
@@ -391,7 +391,7 @@ function  showAdminPage() {         //endpoint@
 
     $.ajax({
         type:"GET",
-        url:'/wordgame/api/v/admins/users',
+        url:'/wordgame/api/admins/v3/users',
         success:function (data) {
            showUserTable(data);
         }
@@ -434,6 +434,22 @@ function showUserTable(data) {
 }
 
 function viewUser(thisObj) {
-    admindiv.style.display="none";
-    userAttrDiv.style.display="block";
+    var uid=thisObj.id;
+    $.ajax({
+        type:"GET",
+        url:'/wordgame/api/admins/v3/'+uid,
+        success:function (data) {
+             console.log("viewUser:"+data);
+       $('#fname').val(data.name.first);
+            $('#lname').val(data.name.last);
+            admindiv.style.display="none";
+            userAttrDiv.style.display="block";
+        }
+    })
+
+}
+
+function backToAdminPage() {
+    admindiv.style.display="block";
+    userAttrDiv.style.display="none";
 }
