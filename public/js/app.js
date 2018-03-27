@@ -191,6 +191,7 @@ function showTable(data) {
     var count = Object.keys(data).length;
     for (var x = 0; x < count; x++) {
         var row = document.createElement("tr");
+        row.style="cursor: pointer;"
        // row.setAttribute("onclick","showGame("+data[x]+")");
         var gid=data[x]._id;
         row.id=gid;
