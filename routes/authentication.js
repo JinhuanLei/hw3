@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-
+var bcrypt = require('bcrypt');
 var db=require("./db")
 var uuid = require('uuid');
 
@@ -33,7 +33,8 @@ router.post('/wordgame/api/login/v3',function (req,res,next) {
              }
     req.session.regenerate( function( err ) {
         db.collection("User").findOne({email: email}, function (err, user) {
-            if (user && user.password == password) {
+
+            if (user &&  bcrypt.compareSync(password, user.password)) {
                 req.session.user = user;
                 delete user.password;
                 csrftoken=uuid();

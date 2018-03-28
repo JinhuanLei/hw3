@@ -79,14 +79,21 @@ function setUser(user) {
     userid=user._id;
     // console.log("setUser:"+user.role+"user.role==\"USER\":"+user.role=="USER");
     $('body').css('background','none')
+    if(user.role=="ADMIN"){
+        $('#adminEmail').text(user.email);
+        $('#page4UserID').text(user.email);
+    }else{
+        $('#userEmail').text(user.email);
+    }
     if(user.role=="USER"){
         console.log("I am user"+user.role);
         closeGame();
         div1.style.display="block";
         admindiv.style.display="none";
     }
-   else {
+    else {
         showAdminPage();
+
         admindiv.style.display="block";
         div1.style.display="none";
     }
@@ -123,8 +130,8 @@ function newGame() {
         data:{"font":font,"level": diff,"wordcolor":wordcolor,"guesscolor":guesscolor,"forecolor":forecolor},
         method: "POST",
         success:function (data) {
-           // console.log(data);
-           //  updateDefault();
+            // console.log(data);
+            //  updateDefault();
             if(data=="expired")
             {
                 validateUser();
@@ -141,6 +148,8 @@ function newGame() {
 
 
 function closeGame() {
+
+
     initialDefaults();
 
     // $('body').css('background','none')
@@ -149,7 +158,7 @@ function closeGame() {
         type: "GET",
         url: '/wordgame/api/v3/' + userid,   //here
         success: function (data) {
-           //console.log(data);
+            //console.log(data);
             if(data=="expired")
             {
                 div2.style.display = 'none';
@@ -161,10 +170,10 @@ function closeGame() {
                 div2.style.display = 'none';
             }
 
-            }
+        }
         // error: alert("error")
 
-        })
+    })
 
 }
 var currentGameObj;
@@ -196,12 +205,12 @@ function showTable(data) {
     for (var x = 0; x < count; x++) {
         var row = document.createElement("tr");
         row.style="cursor: pointer;"
-       // row.setAttribute("onclick","showGame("+data[x]+")");
+        // row.setAttribute("onclick","showGame("+data[x]+")");
         var gid=data[x]._id;
         row.id=gid;
-          row.onclick= function(){
-              retrieveGame(this,gid);
-          };
+        row.onclick= function(){
+            retrieveGame(this,gid);
+        };
         var td1 = document.createElement("td");
         td1.height='40px';
         td1.appendChild(document.createTextNode(data[x].level.name));
@@ -223,14 +232,14 @@ function showTable(data) {
             //     label.appendChild(document.createTextNode(" "));
             // }
             // else
-                label.appendChild(document.createTextNode(text));
+            label.appendChild(document.createTextNode(text));
             //label.appendChild(span);
             td2.append(label);
             td2.append(" ");
 
         }
         // td2.appendChild(document.createTextNode(data[x].view));
-         row.appendChild(td2);
+        row.appendChild(td2);
         var td3 = document.createElement("td");
         td3.appendChild(document.createTextNode(data[x].remaining));
         row.appendChild(td3);
@@ -249,7 +258,7 @@ function showTable(data) {
 function showGame(data) {
     div1.style.display='none';
     currentGameObj=data;
-   // console.log(data);
+    // console.log(data);
     var guessform=document.getElementById("guessform");
     $('#wordview').html("");
     $('#guesses').html("");
@@ -310,12 +319,12 @@ function showGame(data) {
 function retrieveGame(thisObj,gid) {
     console.log("gid:"+gid);
     console.log("ngid:"+thisObj.id);
- var ngid=thisObj.id;
+    var ngid=thisObj.id;
     $.ajax({
         type: "GET",
         url: '/wordgame/api/v3/' + userid+'/'+ngid,
         success: function (data) {
-          showGame(data);
+            showGame(data);
         }
     })
 }
@@ -347,6 +356,7 @@ function login()
                 div1.style.display="none";
                 admindiv.style.display="block";
                 $('#adminEmail').text(data.email);
+                $('#page4UserID').text(data.email);
             }
             userid=data._id;
             //closeGame();   //show main interface
@@ -355,7 +365,7 @@ function login()
             console.log(data);
         },
         error: function (data) {
-           //console.log(data);
+            //console.log(data);
             if(data.responseText=="invalid2"){
                 $('#invalid2').css("display","block");
             }else{
@@ -393,7 +403,7 @@ function  showAdminPage() {         //endpoint@
         type:"GET",
         url:'/wordgame/api/admins/v3/users',
         success:function (data) {
-           showUserTable(data);
+            showUserTable(data);
         }
 
     })
@@ -416,40 +426,142 @@ function showUserTable(data) {
         td1.appendChild(document.createTextNode(data[x].name.first));
         row.appendChild(td1);
         var td2 = document.createElement("td");
-         td2.appendChild(document.createTextNode(data[x].name.last));
+        td2.appendChild(document.createTextNode(data[x].name.last));
         row.appendChild(td2);
         var td3 = document.createElement("td");
         td3.appendChild(document.createTextNode(data[x].email));
         row.appendChild(td3);
         var td4 = document.createElement("td");
-        td4.appendChild(document.createTextNode(data[x].rule));
+        td4.appendChild(document.createTextNode(data[x].role));
         if(data[x].status!="unfinished")  row.appendChild(td4);
         else row.appendChild(document.createElement("td"));
         var td5 = document.createElement("td");
-        td5.appendChild(document.createTextNode("TRUE"));
+        td5.appendChild(document.createTextNode(data[x].enabled));
         row.appendChild(td5);
         document.getElementById("userTB").append(row);
     }
 
 }
+function initialCreateUserPage() {
+    admindiv.style.display="none";
+    userAttrDiv.style.display="block";
+    $("#pswdiv").css('display','block');
+    $("#create").css('display','block');
+    $("#update").css('display','none');
+    $('#fname').val("");
+    $('#lname').val("");
+    $('#email').val("");
+    $('#password').val("");
+    $('#invalid3').css('display','none');
+    $('#invalid4').css('display','none');
+    $('#enabled').prop('checked', false);
+}
 
 function viewUser(thisObj) {
-    var uid=thisObj.id;
-    $.ajax({
-        type:"GET",
-        url:'/wordgame/api/admins/v3/'+uid,
-        success:function (data) {
-             console.log("viewUser:"+data);
-       $('#fname').val(data.name.first);
-            $('#lname').val(data.name.last);
-            admindiv.style.display="none";
-            userAttrDiv.style.display="block";
-        }
-    })
+
+    if(thisObj=='create'){
+        initialCreateUserPage();
+    }else{
+        $("#pswdiv").css('display','none');
+        var uid=thisObj.id;
+        $.ajax({
+            type:"GET",
+            url:'/wordgame/api/admins/v3/'+uid,
+            success:function (data) {
+                console.log("viewUser:"+data);
+                $('#fname').val(data.name.first);
+                $('#userID').val(data._id);
+                $('#lname').val(data.name.last);
+                $('#email').val(data.email);
+                if(data.enabled=="Enabled"){
+                    $('#enabled').prop('checked', true);
+                }
+                if(data.role=="ADMIN"){
+                    $('#admin').prop('checked', true);
+                }else{
+                    $('#user').prop('checked', true);
+                }
+                admindiv.style.display="none";
+                userAttrDiv.style.display="block";
+                $("#update").css('display','block');
+                $("#create").css('display','none');
+            }
+        })
+    }
 
 }
 
 function backToAdminPage() {
     admindiv.style.display="block";
     userAttrDiv.style.display="none";
+}
+
+
+function createUser() {
+    $('#invalid3').css("display","none");
+    $('#invalid4').css("display","none");
+    var fname=$('#fname').val();
+    var lname=$('#lname').val();
+    var email=$('#email').val();
+    var password=$('#password').val();
+    if(($("input[type='radio'][name='radio']:checked").length == 0 ? true : false)||!$('#enabled').prop("checked")||fname==""||lname==""||email==""||password=="") {
+        $('#invalid3').css("display","block");
+        return;
+    }
+
+    if(!validateEmail(email)){
+        $('#invalid4').css("display","block");
+        return;
+    }
+
+    var role=$('#admin').prop("checked")?"ADMIN":"USER";
+    var enabled=$('#enabled').prop("checked")?"Enabled":"Disabled";
+
+    $.ajax({
+        type:"POST",
+        url:"/wordgame/api/admins/v3/users",
+        data:{"first":fname,"last":lname,"email":email,"role":role,"enabled":enabled,"password":password},
+        success:function () {
+                $('#page4').css("display","none");
+                $('#page3').css("display","block");
+                showAdminPage();
+        }
+    })
+}
+
+function validateEmail(email) {
+    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+}
+
+function updateUser() {
+    $('#invalid3').css("display","none");
+    $('#invalid4').css("display","none");
+    var fname=$('#fname').val();
+    var lname=$('#lname').val();
+    var email=$('#email').val();
+    var _id=$('#userID').val();
+    if(($("input[type='radio'][name='radio']:checked").length == 0 ? true : false)||!$('#enabled').prop("checked")||fname==""||lname==""||email==""||password=="") {
+        $('#invalid3').css("display","block");
+        return;
+    }
+
+    if(!validateEmail(email)){
+        $('#invalid4').css("display","block");
+        return;
+    }
+
+    var role=$('#admin').prop("checked")?"ADMIN":"USER";
+    var enabled=$('#enabled').prop("checked")?"Enabled":"Disabled";
+
+    $.ajax({
+        type:"PUT",
+        url:"/wordgame/api/admins/v3/users",
+        data:{"first":fname,"last":lname,"email":email,"role":role,"enabled":enabled,"uid":_id},
+        success:function () {
+            $('#page4').css("display","none");
+            $('#page3').css("display","block");
+            showAdminPage();
+        }
+    })
 }
