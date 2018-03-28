@@ -345,6 +345,7 @@ function login()
         data:{"email":email,"password":password},
         success: function (data) {
             $('#invalid2').css("display","none");
+            $('#invalid5').css("display","none");
             $('#invalid1').css("display","none");
             logindiv.style.display="none";
             console.log(data.role);
@@ -368,6 +369,8 @@ function login()
             //console.log(data);
             if(data.responseText=="invalid2"){
                 $('#invalid2').css("display","block");
+            }else if(data.responseText=="Disabled"){
+                $('#invalid5').css("display","block");
             }else{
                 $('#invalid1').css("display","block");
             }
@@ -504,7 +507,7 @@ function createUser() {
     var lname=$('#lname').val();
     var email=$('#email').val();
     var password=$('#password').val();
-    if(($("input[type='radio'][name='radio']:checked").length == 0 ? true : false)||!$('#enabled').prop("checked")||fname==""||lname==""||email==""||password=="") {
+    if(($("input[type='radio'][name='radio']:checked").length == 0 ? true : false)||fname==""||lname==""||email==""||password=="") {
         $('#invalid3').css("display","block");
         return;
     }
@@ -541,7 +544,7 @@ function updateUser() {
     var lname=$('#lname').val();
     var email=$('#email').val();
     var _id=$('#userID').val();
-    if(($("input[type='radio'][name='radio']:checked").length == 0 ? true : false)||!$('#enabled').prop("checked")||fname==""||lname==""||email==""||password=="") {
+    if(($("input[type='radio'][name='radio']:checked").length == 0 ? true : false)||fname==""||lname==""||email==""||password=="") {
         $('#invalid3').css("display","block");
         return;
     }

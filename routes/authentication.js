@@ -33,8 +33,12 @@ router.post('/wordgame/api/login/v3',function (req,res,next) {
              }
     req.session.regenerate( function( err ) {
         db.collection("User").findOne({email: email}, function (err, user) {
+           if(user.enabled=="Disabled"){
+               res.status(403).send('Disabled');
+               return;
+           }
 
-            if (user &&  bcrypt.compareSync(password, user.password)) {
+            if (user &&bcrypt.compareSync(password, user.password)) {
                 req.session.user = user;
                 delete user.password;
                 csrftoken=uuid();
