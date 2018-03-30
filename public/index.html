@@ -147,6 +147,21 @@
      <a onmouseover="" style="cursor: pointer;" onclick="viewUser('create')">Create User</a>
         </div>
         <br>
+
+        <div class="col-md-10 col-md-offset-1 well well-sm">
+            <div style="margin-top: 10px">
+            <div class="form-group col-md-2 col-md-offset-8">
+                <input type="text" class="form-control" id="search" placeholder="Search Here!">
+            </div>
+            <div class="form-group col-md-1">
+                <button type="submit" onclick="searchUser()" class="btn btn-primary">Search</button>
+            </div>
+                <div class="form-group col-md-1">
+                    <button type="submit" onclick="refreshTable()" class="btn btn-primary">Refresh</button>
+                </div>
+            </div>
+        </div>
+
         <div class="col-md-10 col-md-offset-1 well well-sm">
                 <table class="table table-bordered" style="width:100%" id="userList" >
                     <thead>

@@ -42,6 +42,7 @@ router.post('/wordgame/api/login/v3',function (req,res,next) {
                 req.session.user = user;
                 delete user.password;
                 csrftoken=uuid();
+                req.session.csrftoken=csrftoken;
                 res.set({
                     //'Set-Cookie': 'mycookiesid='+req.sessionID,
                     "CSRF-Token":csrftoken

@@ -343,7 +343,8 @@ function login()
         type: "POST",
         url: '/wordgame/api/login/v3',
         data:{"email":email,"password":password},
-        success: function (data) {
+        success: function (data, textStatus, request) {
+            console.log("csrf Token:"+request.getResponseHeader('CSRF-Token'));
             $('#invalid2').css("display","none");
             $('#invalid5').css("display","none");
             $('#invalid1').css("display","none");
@@ -376,6 +377,7 @@ function login()
             }
 
         }
+
     })
 }
 
@@ -532,7 +534,7 @@ function createUser() {
     })
 }
 
-function validateEmail(email) {
+function validateEmail(email){
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
 }
@@ -567,4 +569,23 @@ function updateUser() {
             showAdminPage();
         }
     })
+}
+
+
+function searchUser() {
+    var searchValue=$('#search').val();
+    $.ajax({
+        type:"POST",
+        url:"/wordgame/api/admins/v3/search",
+        data:{"search":searchValue},
+        success:function (data) {
+      showUserTable(data);
+
+
+        }
+    })
+}
+
+function refreshTable() {
+    showAdminPage();
 }

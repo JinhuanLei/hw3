@@ -87,10 +87,27 @@ router.get('/wordgame/api/admins/v3/:uid', function(req, res, next) {
         }
 
     });
-
-
-
-
 })
+
+
+router.post('/wordgame/api/admins/v3/search', function(req, res, next) {
+    var search = req.body.search;
+    console.log(search);
+    db.collection('User').find({
+        $or:[ {email: search},
+            {"name.first": {$regex: search}},
+            {"name.last": {$regex: search}}]
+    }).toArray(function (err, users) {
+if(err){
+    res.send(err);
+}else{
+    res.send(users);
+}
+
+
+    })
+});
+
+
 
 module.exports = router;
