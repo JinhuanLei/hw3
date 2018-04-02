@@ -3,8 +3,6 @@ var sid;
 $(document).ready(function () {
 
     validateUser();
-
-
     $.ajax({
         type: "GET",
         url :  "/wordgame/api/v3/meta/fonts",
@@ -463,7 +461,8 @@ function initialCreateUserPage() {
 }
 
 function viewUser(thisObj) {
-
+    $('#admin').attr('disabled',false);
+    $('#user').attr('disabled',false);
     if(thisObj=='create'){
         initialCreateUserPage();
     }else{
@@ -473,7 +472,7 @@ function viewUser(thisObj) {
             type:"GET",
             url:'/wordgame/api/admins/v3/'+uid,
             success:function (data) {
-                console.log("viewUser:"+data);
+                console.log(data);
                 $('#fname').val(data.name.first);
                 $('#userID').val(data._id);
                 $('#lname').val(data.name.last);
@@ -490,6 +489,12 @@ function viewUser(thisObj) {
                 userAttrDiv.style.display="block";
                 $("#update").css('display','block');
                 $("#create").css('display','none');
+                // var user="<%=session.getAttribute("user")%>";
+
+                if(data._id==userid){
+                    $('#admin').attr('disabled',true);
+                    $('#user').attr('disabled',true);
+                }
             }
         })
     }
